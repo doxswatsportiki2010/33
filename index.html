@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fame Site</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        background: #1a002b;
+        color: #eee;
+        font-family: "Orbitron", monospace, sans-serif;
+      }
+
+      #welcomeModal {
+        position: fixed;
+        inset: 0;
+        background: rgba(20, 0, 50, 0.95);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        z-index: 9999;
+      }
+
+      #welcomeModal .emoji {
+        font-size: 60px;
+        display: inline-block;
+        animation: waveEmoji 2s ease-in-out infinite;
+        transform-origin: 70% 70%;
+        margin-bottom: 15px;
+      }
+
+      @keyframes waveEmoji {
+        0% {
+          transform: rotate(0deg);
+        }
+        15% {
+          transform: rotate(15deg);
+        }
+        30% {
+          transform: rotate(-10deg);
+        }
+        45% {
+          transform: rotate(10deg);
+        }
+        60% {
+          transform: rotate(-5deg);
+        }
+        75% {
+          transform: rotate(5deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+
+      #welcomeModal h1 {
+        font-size: 2.4rem;
+        color: #b783ff;
+        text-shadow: 0 0 10px #b783ff;
+        margin: 0 0 10px;
+      }
+
+      #welcomeModal p {
+        font-size: 1.2rem;
+        color: #ddd;
+        max-width: 320px;
+        margin-bottom: 20px;
+      }
+
+      #welcomeModal button {
+        background: #8a4fff;
+        border: none;
+        padding: 12px 28px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 0 20px #8a4fff88;
+        transition: background 0.3s;
+      }
+
+      #welcomeModal button:hover {
+        background: #b783ff;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 0 15px;
+        display: none;
+      }
+
+      #searchContainer {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      #searchInput {
+        width: 90%;
+        max-width: 400px;
+        padding: 10px 15px;
+        font-size: 1rem;
+        border-radius: 25px;
+        border: none;
+        outline: none;
+        background: #36005a;
+        color: #eee;
+        box-shadow: 0 0 15px #8a4fff88;
+      }
+
+     .tabs-main {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.tabs-main button {
+  flex: 1;
+  min-width: 120px;
+  cursor: pointer;
+  font-weight: 700;
+  border: none;
+  border-radius: 25px;
+  background: #36005a;
+  color: #b783ff;
+  padding: 12px 20px;
+  box-shadow: inset 0 0 0 1px #b783ff33;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tabs-main button.active {
+  background: #8a4fff;
+  color: #fff;
+  box-shadow: 0 0 12px 3px #b783ff88;
+}
+
+.tabs-main button:hover:not(.active) {
+  background: #6c3acc;
+  box-shadow: 0 0 10px 2px #b783ff55;
+}
+
+.tabs-fame-wrapper {
+ overflow-x: visible;
+  scrollbar-width: none;
+  margin-bottom: 30px;
+  
+}
+      
+      .tabs-fame-wrapper::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari */
+}
+      
+      @media (max-width: 768px) 
+      {
+        .tabs-fame-wrapper 
+        {
+          padding: 12px 16px;
+         overflow-x: auto;
+          overflow-y: visible;
+          white-space: nowrap;
+          -ms-overflow-style: none;
+          scrollbar-width: thin;
+        }
+        
+        .tabs-fame-wrapper:: -webkit-scrollbar {
+          height: 6px;
+        }
+        
+        .tabs-fame-wrapper::-webkit-scrollbar-thumb {
+          background: #a0077ff55;
+          border-radius: 10px;
+        }
+        
+        .tabs-fame-wrapper::-webkit-scrollbar-thumb {
+          background: #a0077ff55;
+        }
+        
+        .tabs-fame {
+          display: inline-flex;
+          min-width: max-content;
+          padding-right: 10px;
+        }
+        
+      }
+.tabs-fame {
+  
+    display: inline-flex;
+  gap: 10px;
+  min-width: max-content;
+}
+
+.tabs-fame button {
+  flex-shrink: 0;
+  width: auto;
+  min-width: 120px;
+  cursor: pointer;
+  font-weight: 700;
+  border: none;
+  border-radius: 25px;
+  background: #22003b;
+  color: #a077ff;
+  padding: 10px 20px;
+  box-shadow: inset 0 0 0 1px #b783ff33;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  pointer-events: auto;
+}
+
+.tabs-fame button.active {
+  background: #b783ff;
+  color: #1a002b;
+  box-shadow: 0 0 12px 3px #b783ff99;
+}
+
+.tabs-fame button:hover:not(.active) {
+  background: #8a4fff;
+  box-shadow: 0 0 10px 2px #8a4fff55;
+}
+
+
+      .list {
+        background: #2d005a;
+        border-radius: 12px;
+        padding: 10px 15px;
+        box-shadow: 0 0 20px #8a4fff88;
+      }
+
+      .list-item {
+        padding: 12px;
+        border-bottom: 1px solid #4c2ec2;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        cursor: pointer;
+      }
+
+      .list-item:last-child {
+        border-bottom: none;
+      }
+
+      .list-item img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #999;
+      }
+
+      .list-item h4 {
+        margin: 0 0 6px;
+        color: #d9c4ff;
+      }
+
+      .list-item p {
+        margin: 0;
+        color: #c4b9ffcc;
+        font-size: 0.9rem;
+      }
+
+      .support-link {
+        display: block;
+        text-align: center;
+        margin: 40px 0 20px;
+        color: #b783ff;
+        text-decoration: underline;
+        font-weight: 700;
+      }
+
+      .modal-user {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(6px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .modal-content {
+        background: #240046;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 25px #8a4fff99;
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+        animation: scaleIn 0.3s ease;
+      }
+
+      .modal-content img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 15px;
+      }
+
+      .modal-content h3 {
+        color: #d9c4ff;
+        margin-bottom: 10px;
+      }
+
+      .modal-content p {
+        color: #c4b9ffcc;
+      }
+
+      .star-icon {
+        font-size: 20px;
+        color: #b783ff;
+      }
+
+      @keyframes scaleIn {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .tabs-main button,
+        .tabs-fame button {
+          min-width: 100px;
+          font-size: 0.9rem;
+          padding: 10px 5px;
+        }
+        #welcomeModal h1 {
+          font-size: 1.6rem;
+        }
+        #welcomeModal p {
+          font-size: 1rem;
+          max-width: 260px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="welcomeModal">
+      <div class="emoji">👋</div>
+      <h1>Привет, бро!</h1>
+      <p>
+        Ты попал на сайт Fame от Краснодарова.<br />
+        Поддержи проект —
+        <a href="https://t.me/krasnodarov" target="_blank"
+          >Канал Краснодарова</a
+        >
+      </p>
+      <button id="welcomeBtn">Далее</button>
+    </div>
+
+    <div class="container" id="mainContent">
+      <div id="searchContainer">
+        <input type="text" id="searchInput" placeholder="Поиск..." />
+        <div
+          id="searchInfo"
+          style="margin-top: 8px; color: #b783ff; font-size: 0.9rem"
+        ></div>
+      </div>
+
+      <div class="tabs-main">
+        <button class="active" data-tab="fame">Все личности</button>
+        <button data-tab="scam" data-fame="scam">Скам</button>
+        <button data-tab="beggars">Бомжи</button>
+      </div>
+
+      <div class="tabs-fame-wrapper">
+        <div class="tabs-fame">
+          <button class="active" data-fame="big">Большой фейм</button>
+          <button data-fame="normal">Нормальный фейм</button>
+          <button data-fame="small">Мелкий фейм</button>
+          <button data-fame="coders">Кодеры</button>
+          <button data-fame="admins">Админы</button>
+          <button data-fame="validated">Валиднутые</button>
+          <button data-fame="forgotten">Заброшенные</button>
+        </div>
+      </div>
+
+      <div id="contentArea">
+        <div class="list" id="fame-big" data-parent="fame">
+    
+          
+                             <div
+            class="list-item"
+            data-name="Николай @nucenu"
+            data-desc=""
+            data-img="https://files.catbox.moe/xpx4l0.jpg"
+          >
+            <img src="https://files.catbox.moe/xpx4l0.jpg" />
+            <span class="star-icon">★</span>
+            <div>
+              <h4>Николай @nucenu</h4>
+              <p></p>
+            </div>
+          </div>
+          
+          
+        </div>
+
+        <div
+          class="list"
+          id="fame-normal"
+          data-parent="fame"
+          style="display: none"
+        >
+        
+              <div
+            class="list-item"
+            data-name="Aleksander Krasnodarov"
+            data-desc="@Krasnodarov — Создатель"
+            data-img="https://files.catbox.moe/2p1qv1.jpg"
+          >
+            <img src="https://files.catbox.moe/2p1qv1.jpg" />
+            <span class="star-icon">★</span>
+            <div>
+              <h4>Aleksander Krasnodarov</h4>
+              <p>@Krasnodarov — Создатель</p>
+            </div>
+          </div>
+          
+          
+          
+          
+          
+                   <div
+            class="list-item"
+            data-name="𝒔𝒆𝒓𝒚𝒙𝒙 𝒆𝒃𝒆𝒕 | 𝑴𝒊𝒉𝒂𝒊𝒍 𝑲𝒓𝒂𝒔𝒏𝒐𝒅𝒂𝒓𝒐𝒗"
+            data-desc="@seryxx1337 — На данный момент дружим более 5 лет на расстоянии, ещё встретимся ❤️"
+            data-img="https://files.catbox.moe/4k8i85.jpg"
+          >
+            <img src="https://files.catbox.moe/4k8i85.jpg" />
+            <span class="star-icon">★</span>
+            <div>
+              <h4>𝒔𝒆𝒓𝒚𝒙𝒙 𝒆𝒃𝒆𝒕 | 𝑴𝒊𝒉𝒂𝒊𝒍 𝑲𝒓𝒂𝒔𝒏𝒐𝒅𝒂𝒓𝒐𝒗</h4>
+              <p>На данный момент дружим более 5 лет на расстоянии, ещё встретимся ❤️</p>
+            </div>
+          </div>
+        
+          
+                       <div
+            class="list-item"
+            data-name="Витек @ownerneylowimych"
+            data-desc="@ownerneylowimych"
+            data-img="https://files.catbox.moe/ijd533.jpg"
+          >
+            <img src="https://files.catbox.moe/ijd533.jpg" />
+            <span class="star-icon">★</span>
+            <div>
+              <h4>Витек @ownerneylowimych</h4>
+              <p>@ownerneylowimych</p>
+            </div>
+          </div>
+          
+                                 <div
+            class="list-item"
+            data-name="секретов @cekretovv"
+            data-desc="@cekretovv"
+            data-img="https://files.catbox.moe/41m0v6.png"
+          >
+            <img src="https://files.catbox.moe/41m0v6.png" />
+            <span class="star-icon">★</span>
+            <div>
+              <h4>секретов @cekretovv</h4>
+              <p>@cekretovv</p>
+            </div>
+          </div>
+          
+                                         <div
+            class="list-item"
+            data-name="ᴏдиᴄᴄᴇй [ ? ] @poseidon_smertonos"
+            data-desc="Кент Краснодарова @poseidon_smertonos"
+            data-img="https://files.catbox.moe/a59yih.jpg"
+          >
+            <img src="https://files.catbox.moe/a59yih.jpg" />
+            <span class="star-icon">★</span>
+            <div>
+              <h4>ᴏдиᴄᴄᴇй [ ? ] @poseidon_smertonos</h4>	
+              <p>Кент Краснодарова @poseidon_smertonos</p>
+            </div>
+          </div>
+        
+        </div>
+        <div
+          class="list"
+          id="fame-small"
+          data-parent="fame"
+          style="display: none"
+        ></div>
+        <div
+          class="list"
+          id="fame-coders"
+          data-parent="fame"
+          style="display: none"
+        >
+          <div
+            class="list-item"
+            data-name="Мираж"
+            data-desc="Создатель сайта, кодер бота @KrasDorBot"
+            data-img="https://files.catbox.moe/h6dl88.jpg"
+          >
+            <img src="https://files.catbox.moe/h6dl88.jpg" />
+            <span class="star-icon">★</span>
+            <div>
+              <h4>Мираж</h4>
+              <p>Мираж являеться активным кодером Краснодарова</p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="list"
+          id="fame-admins"
+          data-parent="fame"
+          style="display: none"
+        >
+          <div
+            class="list-item"
+            data-name="Мираж"
+            data-desc="Мираж являеться Глав. Админом Краснодарова"
+            data-img="https://files.catbox.moe/h6dl88.jpg"
+          >
+            <img src="https://files.catbox.moe/h6dl88.jpg" />
+            <span class="star-icon">★</span>
+            <div>
+              <h4>Мираж</h4>
+              <p>Главный админ Краснодарова</p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="list"
+          id="fame-validated"
+          data-parent="fame"
+          style="display: none"
+        >
+        
+                                          <div
+            class="list-item"
+            data-name="𝑺𝒂𝒏𝒕𝒚 #ᴛихий ᴋонᴛуᴩ @cryns"
+            data-desc="   Данный бомжара возомнил из себя дохуя могущественного, сидит посасывая хуй своему батьку, пиздит что-то в кф • ебаная бомжара как минимум без премиум и базового оформления профиля, а так же сидит 24/7 дрочит в кф #троллингом, но не может найти даже банальную информацию по физу или валидке.
+
+⚪️ Учтите ещё одно, данный сын педофила кидает биф, хотя не знает что это, и не смог ответить на вопрос)
+
+#Ебаный бичуган, можете его не боятся, сынок дворовой шлюшки, видите плюйте в ебало, он король Сролинга
+                       
+                       	
+                       
+                       
+                       +79126301837 - валидник( " 
+            data-img="https://files.catbox.moe/afawfm.jpg"
+          >
+            <img src="https://files.catbox.moe/afawfm.jpg" />
+
+            <div>
+              <h4>𝑺𝒂𝒏𝒕𝒚 #ᴛихий ᴋонᴛуᴩ @cryns</h4>
+              <p> - рассмотрим такую бомже-личность как ( Санти ) </p>
+            </div>
+          </div>
+        
+        
+        </div>
+        <div
+          class="list"
+          id="fame-forgotten"
+          data-parent="fame"
+          style="display: none"
+        ></div>
+
+        <div
+          class="list"
+          id="scam"
+          data-fame="scam"
+          data-parent="scam"
+          style="display: none"
+        >
+          <div
+            class="list-item"
+            data-name="@yourealirefack_osint"
+            data-desc="Данная личность - @yourealirefack_osint, бомж и скамер, без умений, то что умеет только пугать, бесплатные пробив боты и фанстат. • его можете не бояться, чувак нихуя не умеет, а ещё мелочный)
+
+О нем : 
+• Бомж
+• Без умений
+• Скамит даже на 15 звёзд ( бомж мелочный )
+• Пустослов 
+• Интернет герой 
+• НН - неизвестный даже самому телеграмму 
+
+[ В общем бич, удачи всем ]."
+            data-img="https://files.catbox.moe/u14hzp.jpg"
+          >
+            <img src="https://files.catbox.moe/u14hzp.jpg" />
+            <div>
+              <h4>@yourealirefack_osint</h4>
+              <p>бомж и скамер, без умений</p>
+            </div>
+          </div>
+
+          <div
+            class="list-item"
+            data-name="Мофера @mopheraa"
+            data-desc="Данная личность - ебаный скамер и бомж вот его юз @ctury "
+            data-img="https://files.catbox.moe/gh9nhn.jpg"
+          >
+            <img src="https://files.catbox.moe/gh9nhn.jpg" />
+
+            <div>
+              <h4>Мофера @mopheraa</h4>
+              <p>Ебаный Скамер и бомж</p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="list"
+          id="beggars"
+          data-parent="beggars"
+          style="display: none"
+        >
+          <div
+            class="list-item"
+            data-name="@yourealirefack_osint"
+            data-desc="Данная личность - @yourealirefack_osint, бомж и скамер, без умений, то что умеет только пугать, бесплатные пробив боты и фанстат. • его можете не бояться, чувак нихуя не умеет, а ещё мелочный)
+
+О нем : 
+• Бомж
+• Без умений
+• Скамит даже на 15 звёзд ( бомж мелочный )
+• Пустослов 
+• Интернет герой 
+• НН - неизвестный даже самому телеграмму 
+
+[ В общем бич, удачи всем ]"
+            data-img="https://files.catbox.moe/u14hzp.jpg"
+          >
+            <img src="https://files.catbox.moe/u14hzp.jpg" />
+
+            <div>
+              <h4>@yourealirefack_osint</h4>
+              <p>бомж и скамер, без умений</p>
+            </div>
+          </div>
+
+          <div
+            class="list-item"
+            data-name="Мофера"
+            data-desc="Данная личность - ебаный скамер и бомж вот его юз @ctury "
+            data-img="https://files.catbox.moe/gh9nhn.jpg"
+          >
+            <img src="https://files.catbox.moe/gh9nhn.jpg" />
+
+            <div>
+              <h4>Мофера @mopheraa</h4>
+              <p>Ебаный Скамер и бомж</p>
+            </div>
+          </div>
+
+          <div
+            class="list-item"
+            data-name="Vinera Maniac @vkvinera"
+            data-desc="Данная личность - @vkvinera ебаный пиздабол и бомж, которые утверждает что Краснодаров без фейма, хотя сам ебаный ноунейм который сидит с накрутом"
+            data-img="https://files.catbox.moe/ozme21.jpg"
+          >
+            <img src="https://files.catbox.moe/ozme21.jpg" />
+
+            <div>
+              <h4>Vinera Maniac</h4>
+              <p>Ебаный бомж,нн без фейма с накрутом</p>
+            </div>
+          </div>
+
+          <div
+            class="list-item"
+            data-name="ананимус qewrtqq @vwowr"
+            data-desc="Данная личность -  @vwowr агрессивный ебаный бомж без умений, фулл нн"
+            data-img="https://files.catbox.moe/8x40sm.jpg"
+          >
+            <img src="https://files.catbox.moe/8x40sm.jpg" />
+
+            <div>
+              <h4>ананимус qewrtqq @vwowr</h4>
+              <p>Фулл агрессивный бомж без умений</p>
+            </div>
+          </div>
+
+          <div
+            class="list-item"
+            data-name="ʙʟᴀᴢᴇ ᴍᴀʀᴠɪᴘᴏᴠ @vkovn"
+            data-desc="Данная личность -  @vkovn ебаный бомж представляет из себя фулл немощью"
+            data-img="https://files.catbox.moe/qcoryn.jpg"
+          >
+            <img src="https://files.catbox.moe/qcoryn.jpg" />
+
+            <div>
+              <h4>ʙʟᴀᴢᴇ ᴍᴀʀᴠɪᴘᴏᴠ @vkovn</h4>
+              <p>Ебаный бомж и немощь</p>
+            </div>
+          </div>
+          
+                 <div
+            class="list-item"
+            data-name="Падш1й Фидора @Fuckfidora"
+            data-desc="Ебаная немощь без фейма @Fuckfidora"
+            data-img="https://files.catbox.moe/vg9dub.jpg"
+          >
+            <img src="https://files.catbox.moe/vg9dub.jpg" />
+
+            <div>
+              <h4>Падш1й Фидора @Fuckfidora</h4>
+              <p>Ебаная немощь без фейма @Fuckfidora</p>
+            </div>
+          </div>   
+          
+          
+                           <div
+            class="list-item"
+            data-name="Yarovitov #неуловимый#FDC @useryarovitov"
+            data-desc="Ебаная немощь без фейма @useryarovitov"
+            data-img="https://files.catbox.moe/ulkg0w.jpg"
+          >
+            <img src="https://files.catbox.moe/ulkg0w.jpg" />
+
+            <div>
+              <h4>Yarovitov #неуловимый#FDC @useryarovitov</h4>
+              <p>Ебаная немощь без фейма @useryarovitov</p>
+            </div>
+          </div>
+          
+          
+                                     <div
+            class="list-item"
+            data-name="Johanna Klein @userdiamond"
+            data-desc="Ебаная немощь без фейма @userdiamond"
+            data-img="https://files.catbox.moe/2wcrpm.jpg"
+          >
+            <img src="https://files.catbox.moe/2wcrpm.jpg" />
+
+            <div>
+              <h4>Johanna Klein @userdiamond</h4>
+              <p>Ебаная немощь без фейма @userdiamond</p>
+            </div>
+          </div>
+          
+          
+                                               <div
+            class="list-item"
+            data-name="АРМАТ @FuckArmat"
+            data-desc="Ебаная немощь без фейма @FuckArmat"
+            data-img="https://files.catbox.moe/psjnsq.jpg"
+          >
+            <img src="https://files.catbox.moe/psjnsq.jpg" />
+
+            <div>
+              <h4>АРМАТ @FuckArmat</h4>
+              <p>Ебаная немощь без фейма @FuckArmat</p>
+            </div>
+          </div>
+          
+           <div
+            class="list-item"
+            data-name="Александр Восставший @SkypeVostal"
+            data-desc="Ебаный бомж без умений, делает на всех липы и скидывает какие-то халупы и где кидает бумажки со своим ником людям под заборы • Сынок шлюхи думает что он что-то может, а на самом деле арбузный ебака, можете его не боятся он ебаный биченок !"
+            data-img="https://files.catbox.moe/xot80w.jpg"
+          >
+            <img src="https://files.catbox.moe/xot80w.jpg" />
+
+            <div>
+              <h4>Александр Восставший @SkypeVostal</h4>
+              <p>бомж без умений</p>
+            </div>
+          </div>
+          
+                     <div
+            class="list-item"
+            data-name="Molitva Redline @pekcoha"
+            data-desc="Делает липы, ебаный сын бляди без умений"
+            data-img="https://files.catbox.moe/uxtrhf.jpg"
+          >
+            <img src="https://files.catbox.moe/uxtrhf.jpg" />
+
+            <div>
+              <h4>Molitva Redline @pekcoha</h4>
+              <p>Делает липы, ебаный сын бляди без умений</p>
+            </div>
+          </div>
+          
+                               <div
+            class="list-item"
+            data-name="Pahomov @pahomovattack"
+            data-desc="Агро бомж без умений, жалуется феймам но в основном его шлют нахуй и не помогают"
+            data-img="https://files.catbox.moe/cvqowg.jpg"
+          >
+            <img src="https://files.catbox.moe/cvqowg.jpg" />
+
+            <div>
+              <h4>Pahomov @pahomovattack  </h4>
+              <p>Агро бомж без умений, жалуется феймам но в основном его шлют нахуй и не помогают</p>
+            </div>
+          </div>
+          
+          
+                                       <div
+            class="list-item"
+            data-name="𝑺𝒂𝒏𝒕𝒚 #ᴛихий ᴋонᴛуᴩ @cryns"
+            data-desc="   Данный бомжара возомнил из себя дохуя могущественного, сидит посасывая хуй своему батьку, пиздит что-то в кф • ебаная бомжара как минимум без премиум и базового оформления профиля, а так же сидит 24/7 дрочит в кф #троллингом, но не может найти даже банальную информацию по физу или валидке.
+
+⚪️ Учтите ещё одно, данный сын педофила кидает биф, хотя не знает что это, и не смог ответить на вопрос)
+
+#Ебаный бичуган, можете его не боятся, сынок дворовой шлюшки, видите плюйте в ебало, он король Сролинга
+                       
+                       	
+                       
+                       
+                       +79126301837 - валидник( " 
+            data-img="https://files.catbox.moe/afawfm.jpg"
+          >
+            <img src="https://files.catbox.moe/afawfm.jpg" />
+
+            <div>
+              <h4>𝑺𝒂𝒏𝒕𝒚 #ᴛихий ᴋонᴛуᴩ @cryns</h4>
+              <p> - рассмотрим такую бомже-личность как ( Санти ) </p>
+            </div>
+          </div>
+          
+          
+          
+                                                 <div
+            class="list-item"
+            data-name="portman | Trust 45$ @masthouse"
+            data-desc="Ебаный не способный ни на что тролль, так же с удовольствием активно гатиться в туза с Pahomov @pahomovattack " 
+            data-img="https://files.catbox.moe/p8r33y.png"
+          >
+            <img src="https://files.catbox.moe/p8r33y.png" />
+
+            <div>
+              <h4>portman | Trust 45$ @masthouse</h4>
+              <p>рассмотрим такую путану как - @masthouse </p>
+            </div>
+          </div>
+          
+          
+          
+          
+        </div>
+      </div>
+
+      <a href="https://t.me/krasnodarov" target="_blank" class="support-link"
+        >Поддержать проект — канал Краснодарова</a
+      >
+    </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('[data-parent="fame"]').forEach((el) => {
+      if (!el.dataset.fame && el.id?.startsWith("fame-")) {
+        el.dataset.fame = el.id.replace("fame-", "");
+      }
+    });
+
+    const welcomeBtn = document.getElementById("welcomeBtn");
+    const welcomeModal = document.getElementById("welcomeModal");
+    const mainContent = document.getElementById("mainContent");
+    const tabsMain = document.querySelectorAll(".tabs-main button");
+    const tabsFame = document.querySelectorAll(".tabs-fame button");
+    const allLists = document.querySelectorAll(".list");
+    const fameTabsWrapper = document.querySelector(".tabs-fame-wrapper");
+    const searchInput = document.getElementById("searchInput");
+    const searchInfo = document.getElementById("searchInfo");
+
+    let activeMain = "fame",
+        activeFame = "big";
+
+    welcomeBtn.onclick = () => {
+      welcomeModal.style.display = "none";
+      mainContent.style.display = "block";
+      searchInput.focus();
+      updateLists();
+    };
+
+    tabsMain.forEach((btn) => {
+      btn.onclick = () => {
+        if (btn.dataset.tab !== activeMain) {
+          tabsMain.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeMain = btn.dataset.tab;
+          fameTabsWrapper.style.display = activeMain === "fame" ? "block" : "none";
+          searchInput.value = "";
+          searchInfo.textContent = "";
+          updateLists();
+        }
+      };
+    });
+
+    tabsFame.forEach((btn) => {
+      btn.onclick = () => {
+        if (btn.dataset.fame !== activeFame) {
+          tabsFame.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeFame = btn.dataset.fame;
+          searchInput.value = "";
+          searchInfo.textContent = "";
+          updateLists();
+        }
+      };
+    });
+
+    function updateLists() {
+      allLists.forEach((list) => {
+        const parent = list.dataset.parent;
+        const fameType = list.dataset.fame;
+        const show =
+          (activeMain === "fame" && parent === "fame" && fameType === activeFame) ||
+          (parent === activeMain && activeMain !== "fame");
+
+        list.style.display = show ? "block" : "none";
+      });
+    }
+
+    searchInput.oninput = () => {
+      const q = searchInput.value.toLowerCase().trim();
+      const contentArea = document.getElementById("contentArea");
+
+      if (!q) {
+        fameTabsWrapper.style.display = activeMain === "fame" ? "block" : "none";
+        updateLists();
+        searchInfo.textContent = "";
+        return;
+      }
+
+      contentArea.innerHTML = "";
+      const sections = {};
+
+      allLists.forEach((list) => {
+        list.querySelectorAll(".list-item").forEach((item) => {
+          if (item.textContent.toLowerCase().includes(q)) {
+            const parent = list.dataset.parent;
+            if (!sections[parent]) sections[parent] = [];
+            sections[parent].push(item.cloneNode(true));
+          }
+        });
+      });
+
+      if (Object.keys(sections).length === 0) {
+        contentArea.innerHTML = `<p style="color:#f88;">Ничего не найдено</p>`;
+        searchInfo.textContent = "";
+        return;
+      }
+
+      const foundNames = [];
+      for (const [parent, items] of Object.entries(sections)) {
+        let title =
+          parent === "fame"
+            ? "Все личности"
+            : parent === "scam"
+            ? "Скам"
+            : parent === "beggars"
+            ? "Бомжи"
+            : parent;
+
+        const h2 = document.createElement("h2");
+        h2.textContent = `Секция: ${title}`;
+        h2.style.cssText = "margin:20px 0 10px;color:#b783ff;";
+        contentArea.appendChild(h2);
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "list";
+        wrapper.style.display = "block";
+
+        items.forEach((it) => {
+          it.style.display = "flex";
+          wrapper.appendChild(it);
+        });
+        contentArea.appendChild(wrapper);
+
+        foundNames.push(title);
+      }
+
+      searchInfo.textContent = `Найдено совпадений в секциях: ${foundNames.join(", ")}`;
+    };
+
+    document.body.addEventListener("click", (e) => {
+      const item = e.target.closest(".list-item");
+      if (!item) return;
+      const name = item.dataset.name;
+      const desc = item.dataset.desc;
+      const img =
+        item.dataset.img ||
+        "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+      const modal = document.createElement("div");
+      modal.className = "modal-user";
+      modal.innerHTML = `
+      <div class="modal-content">
+        <img src="${img}" />
+        <h3>${name}</h3>
+        <p>${desc}</p>
+      </div>`;
+      modal.onclick = () => modal.remove();
+      document.body.appendChild(modal);
+    });
+
+    fameTabsWrapper.style.display = activeMain === "fame" ? "block" : "none";
+    updateLists();
+
+    const style = document.createElement("style");
+    style.textContent = `
+      #searchModal div::-webkit-scrollbar {
+        width: 8px;
+      }
+      #searchModal div::-webkit-scrollbar-thumb {
+        background-color: #8e2de2;
+        border-radius: 10px;
+      }
+      #searchModal div::-webkit-scrollbar-track {
+        background: #1a0033;
+      }
+      @keyframes fadeScaleIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    const searchModal = document.createElement("div");
+    searchModal.id = "searchModal";
+    searchModal.style.cssText = `
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(12px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 60px;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    `;
+
+    searchModal.innerHTML = `
+      <div style="
+        background: #140024;
+        border: 1px solid #8026ff;
+        border-radius: 18px;
+        padding: 24px;
+        width: 90%;
+        max-width: 850px;
+        max-height: 75vh;
+        overflow-y: auto;
+        box-shadow: 0 0 25px rgba(142, 45, 226, 0.4);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-height: 400px;
+        animation: fadeScaleIn 0.2s ease;
+      ">
+        <input id="searchInputModal" type="text" placeholder="🔍 Поиск по имени или описанию..." style="
+          width: 100%;
+          padding: 14px 18px;
+          font-size: 16px;
+          border-radius: 12px;
+          border: 1px solid #4e0a99;
+          outline: none;
+          background: #1b0033;
+          color: #fff;
+          box-shadow: 0 0 12px rgba(142, 45, 226, 0.2);
+          transition: border 0.2s;
+        " />
+        <div id="searchResults" style="
+          flex: 1;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          color: #ccc;
+          font-size: 15px;
+        ">
+          <p style="color:#666;">Введите текст для поиска...</p>
+        </div>
+      </div>
+
+      <button id="closeSearchModal" style="
+        position: fixed;
+        top: 20px;
+        right: 28px;
+        background: none;
+        border: none;
+        font-size: 26px;
+        color: #c47aff;
+        cursor: pointer;
+        z-index: 10000;
+        transition: transform 0.15s ease;
+      " title="Закрыть">✖</button>
+    `;
+    document.body.appendChild(searchModal);
+
+    const searchInputModal = document.getElementById("searchInputModal");
+    const resultsContainer = document.getElementById("searchResults");
+
+    searchInputModal.oninput = () => {
+      const q = searchInputModal.value.toLowerCase().trim();
+      resultsContainer.innerHTML = "";
+
+      if (!q) {
+        resultsContainer.innerHTML =
+          "<p style='color:#666;'>Введите текст для поиска...</p>";
+        return;
+      }
+
+      const allItems = document.querySelectorAll(".list-item");
+      const grouped = {};
+
+      allItems.forEach((item) => {
+        const name = item.dataset.name?.toLowerCase() || "";
+        const desc = item.dataset.desc?.toLowerCase() || "";
+        const parent = item.closest(".list")?.dataset.parent;
+        const fame = item.closest(".list")?.dataset.fame;
+
+        if ((name.includes(q) || desc.includes(q)) && parent) {
+          if (!grouped[parent]) grouped[parent] = {};
+          const fameKey = fame || "default";
+          if (!grouped[parent][fameKey]) grouped[parent][fameKey] = [];
+          grouped[parent][fameKey].push(item.cloneNode(true));
+        }
+      });
+
+      if (Object.keys(grouped).length === 0) {
+        resultsContainer.innerHTML =
+          "<p style='color:#555;'>🚫 Ничего не найдено...</p>";
+        return;
+      }
+
+      const fameNames = {
+        big: "💎 Большой фейм",
+        mid: "📣 Нормальный фейм",
+        small: "🎯 Мелкий фейм",
+        admin: "🛠️ Админы",
+        valid: "✅ Валиднутые",
+        abandoned: "☠️ Заброшенные",
+        coder: "👨‍💻 Кодеры",
+        default: "🔹 Без категории"
+      };
+
+      const parentNames = {
+        fame: "Личности",
+        scam: "Скам",
+        beggars: "Бомжи"
+      };
+
+      for (const [parent, fameGroups] of Object.entries(grouped)) {
+        const sectionTitle = document.createElement("h2");
+        sectionTitle.textContent = `Секция: ${parentNames[parent] || parent}`;
+        sectionTitle.style.cssText = "margin:20px 0 10px;color:#b783ff;";
+        resultsContainer.appendChild(sectionTitle);
+
+        for (const [fameKey, items] of Object.entries(fameGroups)) {
+          const fameTitle = document.createElement("h3");
+          fameTitle.textContent = fameNames[fameKey] || fameKey;
+          fameTitle.style.cssText = "margin:10px 0 6px;color:#9f73ff;";
+          resultsContainer.appendChild(fameTitle);
+
+          const sectionWrapper = document.createElement("div");
+          sectionWrapper.className = "list";
+          sectionWrapper.style.display = "block";
+
+          items.forEach((item) => {
+            item.style.display = "flex";
+            sectionWrapper.appendChild(item);
+          });
+
+          resultsContainer.appendChild(sectionWrapper);
+        }
+      }
+    };
+
+    document.getElementById("closeSearchModal").onclick = () => {
+      searchModal.style.display = "none";
+      searchInputModal.value = "";
+      resultsContainer.innerHTML =
+        "<p style='color:#666;'>Введите текст для поиска...</p>";
+    };
+
+    if (searchInput) {
+      searchInput.addEventListener("click", () => {
+        searchModal.style.display = "flex";
+        searchInputModal.value = "";
+        resultsContainer.innerHTML =
+          "<p style='color:#666;'>Введите текст для поиска...</p>";
+        searchInputModal.focus();
+      });
+    }
+  });
+</script>
+
+
+<script src="https://static.app/js/static.js" type="text/javascript"></script>
+</body>
+</html>
