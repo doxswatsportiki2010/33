@@ -873,24 +873,12 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('[data-parent="fame"]').forEach((el) => {
-      if (!el.dataset.fame && el.id?.startsWith("fame-")) {
-        el.dataset.fame = el.id.replace("fame-", "");
-      }
-    });
-
     const welcomeBtn = document.getElementById("welcomeBtn");
     const welcomeModal = document.getElementById("welcomeModal");
     const mainContent = document.getElementById("mainContent");
-    const tabsMain = document.querySelectorAll(".tabs-main button");
-    const tabsFame = document.querySelectorAll(".tabs-fame button");
     const allLists = document.querySelectorAll(".list");
-    const fameTabsWrapper = document.querySelector(".tabs-fame-wrapper");
     const searchInput = document.getElementById("searchInput");
     const searchInfo = document.getElementById("searchInfo");
-
-    let activeMain = "fame",
-        activeFame = "big";
 
     welcomeBtn.onclick = () => {
       welcomeModal.style.display = "none";
@@ -899,42 +887,9 @@
       updateLists();
     };
 
-    tabsMain.forEach((btn) => {
-      btn.onclick = () => {
-        if (btn.dataset.tab !== activeMain) {
-          tabsMain.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          activeMain = btn.dataset.tab;
-          fameTabsWrapper.style.display = activeMain === "fame" ? "block" : "none";
-          searchInput.value = "";
-          searchInfo.textContent = "";
-          updateLists();
-        }
-      };
-    });
-
-    tabsFame.forEach((btn) => {
-      btn.onclick = () => {
-        if (btn.dataset.fame !== activeFame) {
-          tabsFame.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          activeFame = btn.dataset.fame;
-          searchInput.value = "";
-          searchInfo.textContent = "";
-          updateLists();
-        }
-      };
-    });
-
     function updateLists() {
       allLists.forEach((list) => {
-        const parent = list.dataset.parent;
-        const fameType = list.dataset.fame;
-        const show =
-          (activeMain === "fame" && parent === "fame" && fameType === activeFame) ||
-          (parent === activeMain && activeMain !== "fame");
-
-        list.style.display = show ? "block" : "none";
+        list.style.display = "block";
       });
     }
 
@@ -943,61 +898,39 @@
       const contentArea = document.getElementById("contentArea");
 
       if (!q) {
-        fameTabsWrapper.style.display = activeMain === "fame" ? "block" : "none";
         updateLists();
         searchInfo.textContent = "";
         return;
       }
 
       contentArea.innerHTML = "";
-      const sections = {};
+      const foundItems = [];
 
       allLists.forEach((list) => {
         list.querySelectorAll(".list-item").forEach((item) => {
           if (item.textContent.toLowerCase().includes(q)) {
-            const parent = list.dataset.parent;
-            if (!sections[parent]) sections[parent] = [];
-            sections[parent].push(item.cloneNode(true));
+            foundItems.push(item.cloneNode(true));
           }
         });
       });
 
-      if (Object.keys(sections).length === 0) {
+      if (foundItems.length === 0) {
         contentArea.innerHTML = `<p style="color:#f88;">Ничего не найдено</p>`;
         searchInfo.textContent = "";
         return;
       }
 
-      const foundNames = [];
-      for (const [parent, items] of Object.entries(sections)) {
-        let title =
-          parent === "fame"
-            ? "Все личности"
-            : parent === "scam"
-            ? "Скам"
-            : parent === "beggars"
-            ? "Бомжи"
-            : parent;
+      const wrapper = document.createElement("div");
+      wrapper.className = "list";
+      wrapper.style.display = "block";
 
-        const h2 = document.createElement("h2");
-        h2.textContent = `Секция: ${title}`;
-        h2.style.cssText = "margin:20px 0 10px;color:#b783ff;";
-        contentArea.appendChild(h2);
+      foundItems.forEach((item) => {
+        item.style.display = "flex";
+        wrapper.appendChild(item);
+      });
 
-        const wrapper = document.createElement("div");
-        wrapper.className = "list";
-        wrapper.style.display = "block";
-
-        items.forEach((it) => {
-          it.style.display = "flex";
-          wrapper.appendChild(it);
-        });
-        contentArea.appendChild(wrapper);
-
-        foundNames.push(title);
-      }
-
-      searchInfo.textContent = `Найдено совпадений в секциях: ${foundNames.join(", ")}`;
+      contentArea.appendChild(wrapper);
+      searchInfo.textContent = `Найдено совпадений: ${foundItems.length}`;
     };
 
     document.body.addEventListener("click", (e) => {
@@ -1006,8 +939,7 @@
       const name = item.dataset.name;
       const desc = item.dataset.desc;
       const img =
-        item.dataset.img ||
-        "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+        item.dataset.img || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
       const modal = document.createElement("div");
       modal.className = "modal-user";
       modal.innerHTML = `
@@ -1020,9 +952,9 @@
       document.body.appendChild(modal);
     });
 
-    fameTabsWrapper.style.display = activeMain === "fame" ? "block" : "none";
     updateLists();
 
+    // ===== МОДАЛЬНЫЙ ПОИСК =====
     const style = document.createElement("style");
     style.textContent = `
       #searchModal div::-webkit-scrollbar {
@@ -1077,7 +1009,7 @@
         min-height: 400px;
         animation: fadeScaleIn 0.2s ease;
       ">
-        <input id="searchInputModal" type="text" placeholder="🔍 Поиск по имени или описанию..." style="
+        <input id="searchInputModal" type="text" placeholder="🔍 Поиск по базе..." style="
           width: 100%;
           padding: 14px 18px;
           font-size: 16px;
@@ -1131,69 +1063,30 @@
       }
 
       const allItems = document.querySelectorAll(".list-item");
-      const grouped = {};
+      let found = 0;
+      const wrapper = document.createElement("div");
+      wrapper.className = "list";
+      wrapper.style.display = "block";
 
       allItems.forEach((item) => {
         const name = item.dataset.name?.toLowerCase() || "";
         const desc = item.dataset.desc?.toLowerCase() || "";
-        const parent = item.closest(".list")?.dataset.parent;
-        const fame = item.closest(".list")?.dataset.fame;
 
-        if ((name.includes(q) || desc.includes(q)) && parent) {
-          if (!grouped[parent]) grouped[parent] = {};
-          const fameKey = fame || "default";
-          if (!grouped[parent][fameKey]) grouped[parent][fameKey] = [];
-          grouped[parent][fameKey].push(item.cloneNode(true));
+        if (name.includes(q) || desc.includes(q)) {
+          const clone = item.cloneNode(true);
+          clone.style.display = "flex";
+          wrapper.appendChild(clone);
+          found++;
         }
       });
 
-      if (Object.keys(grouped).length === 0) {
+      if (found === 0) {
         resultsContainer.innerHTML =
           "<p style='color:#555;'>🚫 Ничего не найдено...</p>";
         return;
       }
 
-      const fameNames = {
-        big: "💎 Большой фейм",
-        mid: "📣 Нормальный фейм",
-        small: "🎯 Мелкий фейм",
-        admin: "🛠️ Админы",
-        valid: "✅ Валиднутые",
-        abandoned: "☠️ Заброшенные",
-        coder: "👨‍💻 Кодеры",
-        default: "🔹 Без категории"
-      };
-
-      const parentNames = {
-        fame: "Личности",
-        scam: "Скам",
-        beggars: "Бомжи"
-      };
-
-      for (const [parent, fameGroups] of Object.entries(grouped)) {
-        const sectionTitle = document.createElement("h2");
-        sectionTitle.textContent = `Секция: ${parentNames[parent] || parent}`;
-        sectionTitle.style.cssText = "margin:20px 0 10px;color:#b783ff;";
-        resultsContainer.appendChild(sectionTitle);
-
-        for (const [fameKey, items] of Object.entries(fameGroups)) {
-          const fameTitle = document.createElement("h3");
-          fameTitle.textContent = fameNames[fameKey] || fameKey;
-          fameTitle.style.cssText = "margin:10px 0 6px;color:#9f73ff;";
-          resultsContainer.appendChild(fameTitle);
-
-          const sectionWrapper = document.createElement("div");
-          sectionWrapper.className = "list";
-          sectionWrapper.style.display = "block";
-
-          items.forEach((item) => {
-            item.style.display = "flex";
-            sectionWrapper.appendChild(item);
-          });
-
-          resultsContainer.appendChild(sectionWrapper);
-        }
-      }
+      resultsContainer.appendChild(wrapper);
     };
 
     document.getElementById("closeSearchModal").onclick = () => {
@@ -1214,7 +1107,6 @@
     }
   });
 </script>
-
 
 </body>
 </html>
