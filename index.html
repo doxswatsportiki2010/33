@@ -606,7 +606,7 @@
 • Скамит даже на 15 звёзд ( бомж мелочный )
 • Пустослов 
 • Интернет герой 
-• НН - неизвестный даже самому телеграмму 
+• НН 
 
 [ В общем бич, удачи всем ]."
             data-img="https://files.catbox.moe/u14hzp.jpg"
@@ -650,7 +650,7 @@
 • Скамит даже на 15 звёзд ( бомж мелочный )
 • Пустослов 
 • Интернет герой 
-• НН - неизвестный даже самому телеграмму 
+• НН 
 
 [ В общем бич, удачи всем ]"
             data-img="https://files.catbox.moe/u14hzp.jpg"
@@ -1064,9 +1064,11 @@
 
       const allItems = document.querySelectorAll(".list-item");
       let found = 0;
-      const wrapper = document.createElement("div");
-      wrapper.className = "list";
-      wrapper.style.display = "block";
+const wrapper = document.createElement("div");
+wrapper.style.display = "flex";
+wrapper.style.flexDirection = "column";
+wrapper.style.gap = "16px";
+
 
       allItems.forEach((item) => {
         const name = item.dataset.name?.toLowerCase() || "";
