@@ -936,7 +936,26 @@
 
     function updateLists() {
       allLists.forEach((list) => {
+    const fame = list.dataset.fame;
+    const parent = list.dataset.parent;
+
+    if (activeMain === "fame") {
+      // Показываем только списки, относящиеся к fame и активной сабкатегории
+      if (parent === "fame" && fame === activeFame) {
         list.style.display = "block";
+      } else {
+        list.style.display = "none";
+      }
+      fameTabsWrapper.style.display = "flex";
+    } else {
+      // Показываем только списки, относящиеся к scam или beggars
+      if (parent === activeMain) {
+        list.style.display = "block";
+      } else {
+        list.style.display = "none";
+      }
+      fameTabsWrapper.style.display = "none";
+    }
       });
     }
 
