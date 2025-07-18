@@ -1010,15 +1010,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateLists();
 
-
-  
- const welcomeModal = document.getElementById("welcomeModal");
-  const welcomeBtn = document.getElementById("welcomeBtn");
-
-  welcomeBtn.addEventListener("click", () => {
-    welcomeModal.style.display = "none";
-  });
-  
 });
 
 
@@ -1171,6 +1162,19 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const welcomeBtn = document.getElementById("welcomeBtn");
+    const welcomeModal = document.getElementById("welcomeModal");
+    const mainContent = document.getElementById("mainContent");
+
+    welcomeBtn.addEventListener("click", () => {
+      welcomeModal.style.display = "none";
+      mainContent.style.display = "block";
+    });
+  });
+
+  
 </script>
 
 
