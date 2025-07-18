@@ -1008,6 +1008,15 @@ document.addEventListener("DOMContentLoaded", () => {
     fameTabsWrapper.style.display = "none";
   }
 
+const welcomeModal = document.getElementById("welcomeModal");
+const welcomeBtn = document.getElementById("welcomeBtn");
+
+welcomeBtn.addEventListener("click", () => {
+  welcomeModal.style.display = "none";
+});
+
+  
+
   updateLists();
 });
 
