@@ -973,13 +973,20 @@
       contentArea.innerHTML = "";
       const results = [];
 
-      allLists.forEach((list) => {
-        list.querySelectorAll(".list-item").forEach((item) => {
-          if (item.textContent.toLowerCase().includes(q)) {
-            const clone = item.cloneNode(true);
-            clone.style.display = "flex";
-            results.push(clone);
-          }
+const seen = new Set();
+
+allLists.forEach((list) => {
+  list.querySelectorAll(".list-item").forEach((item) => {
+    const name = item.dataset.name?.toLowerCase() || "";
+    if (item.textContent.toLowerCase().includes(q) && !seen.has(name)) {
+      seen.add(name);
+      const clone = item.cloneNode(true);
+      clone.style.display = "flex";
+      results.push(clone);
+    }
+  });
+});
+
         });
       });
 
@@ -1130,13 +1137,19 @@
       const allItems = document.querySelectorAll(".list-item");
       const results = [];
 
-      allItems.forEach((item) => {
-        const name = item.dataset.name?.toLowerCase() || "";
-        const desc = item.dataset.desc?.toLowerCase() || "";
-        if (name.includes(q) || desc.includes(q)) {
-          const clone = item.cloneNode(true);
-          clone.style.display = "flex";
-          results.push(clone);
+const seen = new Set();
+
+allItems.forEach((item) => {
+  const name = item.dataset.name?.toLowerCase() || "";
+  const desc = item.dataset.desc?.toLowerCase() || "";
+  if ((name.includes(q) || desc.includes(q)) && !seen.has(name)) {
+    seen.add(name);
+    const clone = item.cloneNode(true);
+    clone.style.display = "flex";
+    results.push(clone);
+  }
+});
+
         }
       });
 
@@ -1171,7 +1184,6 @@
     }
   });
 
-<script>
   const buttons = document.querySelectorAll('.tabs-fame button');
   const lists = document.querySelectorAll('.list');
 
@@ -1195,8 +1207,6 @@
   });
 </script>
 
-  
-</script>
 
 
 </body>
