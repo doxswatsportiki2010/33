@@ -903,21 +903,23 @@
     welcomeBtn.onclick = () => {
       welcomeModal.style.display = "none";
       mainContent.style.display = "block";
+      searchInput.focus();
       updateLists();
     };
 
-function updateLists() {
-  allLists.forEach((list) => {
-    const parent = list.dataset.parent;
-    const fameType = list.dataset.fame;
-    const show =
-      (activeMain === "fame" && parent === "fame" && fameType === activeFame) ||
-      (parent === activeMain && activeMain !== "fame");
-
-    list.style.display = show ? "block" : "none";
-  });
-}
-
+    tabsMain.forEach((btn) => {
+      btn.onclick = () => {
+        if (btn.dataset.tab !== activeMain) {
+          tabsMain.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeMain = btn.dataset.tab;
+          fameTabsWrapper.style.display = "none";
+          searchInput.value = "";
+          searchInfo.textContent = "";
+          updateLists();
+        }
+      };
+    });
 
     tabsFame.forEach((btn) => {
       btn.onclick = () => {
@@ -932,7 +934,11 @@ function updateLists() {
       };
     });
 
-
+    function updateLists() {
+      allLists.forEach((list) => {
+        list.style.display = "block";
+      });
+    }
 
     searchInput.oninput = () => {
       const q = searchInput.value.toLowerCase().trim();
