@@ -870,7 +870,6 @@
         >Поддержать проект — канал Краснодарова</a
       >
     </div>
-
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('[data-parent="fame"]').forEach((el) => {
@@ -905,7 +904,7 @@
           tabsMain.forEach((b) => b.classList.remove("active"));
           btn.classList.add("active");
           activeMain = btn.dataset.tab;
-          fameTabsWrapper.style.display = activeMain === "fame" ? "block" : "none";
+          fameTabsWrapper.style.display = "none";
           searchInput.value = "";
           searchInfo.textContent = "";
           updateLists();
@@ -928,13 +927,7 @@
 
     function updateLists() {
       allLists.forEach((list) => {
-        const parent = list.dataset.parent;
-        const fameType = list.dataset.fame;
-        const show =
-          (activeMain === "fame" && parent === "fame" && fameType === activeFame) ||
-          (parent === activeMain && activeMain !== "fame");
-
-        list.style.display = show ? "block" : "none";
+        list.style.display = "block";
       });
     }
 
@@ -943,37 +936,39 @@
       const contentArea = document.getElementById("contentArea");
 
       if (!q) {
-        fameTabsWrapper.style.display = activeMain === "fame" ? "block" : "none";
+        fameTabsWrapper.style.display = "none";
         updateLists();
         searchInfo.textContent = "";
         return;
       }
 
       contentArea.innerHTML = "";
-      const sections = {};
+      const results = [];
 
       allLists.forEach((list) => {
         list.querySelectorAll(".list-item").forEach((item) => {
           if (item.textContent.toLowerCase().includes(q)) {
-            const parent = list.dataset.parent;
-            if (!sections[parent]) sections[parent] = [];
-            sections[parent].push(item.cloneNode(true));
+            const clone = item.cloneNode(true);
+            clone.style.display = "flex";
+            results.push(clone);
           }
         });
       });
 
-      if (Object.keys(sections).length === 0) {
-        contentArea.innerHTML = <p style="color:#f88;">Ничего не найдено</p>;
+      if (results.length === 0) {
+        contentArea.innerHTML = `<p style="color:#f88;">Ничего не найдено</p>`;
         searchInfo.textContent = "";
         return;
       }
 
+      const wrapper = document.createElement("div");
+      wrapper.className = "list";
+      wrapper.style.display = "block";
+      results.forEach((item) => wrapper.appendChild(item));
+      contentArea.appendChild(wrapper);
 
-        foundNames.push(title);
-  
-
-      searchInfo.textContent = Найдено совпадений в секциях: ${foundNames.join(", ")};
-   
+      searchInfo.textContent = `Найдено совпадений: ${results.length}`;
+    };
 
     document.body.addEventListener("click", (e) => {
       const item = e.target.closest(".list-item");
@@ -985,21 +980,21 @@
         "https://cdn-icons-png.flaticon.com/512/847/847969.png";
       const modal = document.createElement("div");
       modal.className = "modal-user";
-      modal.innerHTML = 
-      <div class="modal-content">
-        <img src="${img}" />
-        <h3>${name}</h3>
-        <p>${desc}</p>
-      </div>;
+      modal.innerHTML = `
+        <div class="modal-content">
+          <img src="${img}" />
+          <h3>${name}</h3>
+          <p>${desc}</p>
+        </div>`;
       modal.onclick = () => modal.remove();
       document.body.appendChild(modal);
     });
 
-    fameTabsWrapper.style.display = activeMain === "fame" ? "block" : "none";
+    fameTabsWrapper.style.display = "none";
     updateLists();
 
     const style = document.createElement("style");
-    style.textContent = 
+    style.textContent = `
       #searchModal div::-webkit-scrollbar {
         width: 8px;
       }
@@ -1013,13 +1008,12 @@
       @keyframes fadeScaleIn {
         from { opacity: 0; transform: scale(0.95); }
         to { opacity: 1; transform: scale(1); }
-      }
-    ;
+      }`;
     document.head.appendChild(style);
 
     const searchModal = document.createElement("div");
     searchModal.id = "searchModal";
-    searchModal.style.cssText = 
+    searchModal.style.cssText = `
       display: none;
       position: fixed;
       top: 0; left: 0;
@@ -1032,9 +1026,9 @@
       padding-top: 60px;
       box-sizing: border-box;
       font-family: 'Segoe UI', sans-serif;
-    ;
+    `;
 
-    searchModal.innerHTML = 
+    searchModal.innerHTML = `
       <div style="
         background: #140024;
         border: 1px solid #8026ff;
@@ -1089,7 +1083,7 @@
         z-index: 10000;
         transition: transform 0.15s ease;
       " title="Закрыть">✖</button>
-    ;
+    `;
     document.body.appendChild(searchModal);
 
     const searchInputModal = document.getElementById("searchInputModal");
@@ -1106,31 +1100,30 @@
       }
 
       const allItems = document.querySelectorAll(".list-item");
-      const grouped = {};
+      const results = [];
 
       allItems.forEach((item) => {
         const name = item.dataset.name?.toLowerCase() || "";
         const desc = item.dataset.desc?.toLowerCase() || "";
-        const parent = item.closest(".list")?.dataset.parent;
-        const fame = item.closest(".list")?.dataset.fame;
-
-        if ((name.includes(q) || desc.includes(q)) && parent) {
-          if (!grouped[parent]) grouped[parent] = {};
-          const fameKey = fame || "default";
-          if (!grouped[parent][fameKey]) grouped[parent][fameKey] = [];
-          grouped[parent][fameKey].push(item.cloneNode(true));
+        if (name.includes(q) || desc.includes(q)) {
+          const clone = item.cloneNode(true);
+          clone.style.display = "flex";
+          results.push(clone);
         }
       });
 
-      if (Object.keys(grouped).length === 0) {
+      if (results.length === 0) {
         resultsContainer.innerHTML =
           "<p style='color:#555;'>🚫 Ничего не найдено...</p>";
         return;
       }
 
-
-
-      
+      const wrapper = document.createElement("div");
+      wrapper.className = "list";
+      wrapper.style.display = "block";
+      results.forEach((item) => wrapper.appendChild(item));
+      resultsContainer.appendChild(wrapper);
+    };
 
     document.getElementById("closeSearchModal").onclick = () => {
       searchModal.style.display = "none";
@@ -1150,6 +1143,7 @@
     }
   });
 </script>
+
 
 </body>
 </html>
