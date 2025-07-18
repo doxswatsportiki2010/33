@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
   <head>
@@ -25,28 +26,19 @@
         font-family: "Orbitron", monospace, sans-serif;
       }
 
-     #welcomeModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999;
-  background: #100018;
-  color: white;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  text-align: center;
-}
+      #welcomeModal {
+        position: fixed;
+        inset: 0;
+        background: rgba(20, 0, 50, 0.95);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        z-index: 9999;
+      }
 
-
-#mainContent {
-  display: none;
-
-      
       #welcomeModal .emoji {
         font-size: 60px;
         display: inline-block;
@@ -405,7 +397,6 @@
         <button data-tab="beggars">Бомжи</button>
       </div>
 
-
       <div class="tabs-fame-wrapper">
         <div class="tabs-fame">
           <button class="active" data-fame="big">Большой фейм</button>
@@ -417,7 +408,6 @@
           <button data-fame="forgotten">Заброшенные</button>
         </div>
       </div>
-      
 
       <div id="contentArea">
         <div class="list" id="fame-big" data-parent="fame">
@@ -1018,9 +1008,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   updateLists();
-
 });
-
 
     const style = document.createElement("style");
     style.textContent = `
@@ -1171,19 +1159,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const welcomeBtn = document.getElementById("welcomeBtn");
-    const welcomeModal = document.getElementById("welcomeModal");
-    const mainContent = document.getElementById("mainContent");
-
-    welcomeBtn.addEventListener("click", () => {
-      welcomeModal.style.display = "none";
-      mainContent.style.display = "block";
-    });
-  });
-
-  
 </script>
 
 
