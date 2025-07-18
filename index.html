@@ -889,9 +889,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const fameTabsWrapper = document.querySelector(".tabs-fame-wrapper");
   const fameTabs = document.querySelectorAll(".tabs-fame button");
 
-  let activeMain = "fame";
-  let activeFame = "big";
+  let activeMain = "fame";     // изначально активна вкладка "fame"
+  let activeFame = "big";      // и подкатегория "big"
 
+  // обновление списка на основе текущей категории, подкатегории и поиска
   function updateLists() {
     const query = searchInput.value.trim().toLowerCase();
     const lists = document.querySelectorAll(".list");
@@ -899,14 +900,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     lists.forEach((list) => {
       const parent = list.dataset.parent;
-      const fame = list.dataset.fame || null;
-
+      const fame = list.dataset.fame;
       const isFameCategory = activeMain === "fame";
       const matchesMain = parent === activeMain;
       const matchesFame = fame === activeFame;
 
+      // показывать список только если он принадлежит активной категории
       let showList = false;
-
       if (isFameCategory && matchesMain && matchesFame) {
         showList = true;
       } else if (!isFameCategory && matchesMain) {
@@ -934,17 +934,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      list.style.display = visibleCount > 0 ? "block" : "none";
+      if (visibleCount > 0) {
+        list.style.display = "block";
+      } else {
+        list.style.display = "none";
+      }
+
       totalVisible += visibleCount;
     });
 
-    searchInfo.textContent = query
-      ? totalVisible > 0
-        ? Найдено результатов: ${totalVisible}
-        : "Ничего не найдено"
-      : "";
+    // обновить инфо строку
+    if (query !== "") {
+      if (totalVisible > 0) {
+        searchInfo.textContent = `Найдено результатов: ${totalVisible}`;
+      } else {
+        searchInfo.textContent = "Ничего не найдено";
+      }
+    } else {
+      searchInfo.textContent = "";
+    }
   }
 
+  // обработка переключения главных вкладок
   tabsMain.forEach((btn) => {
     btn.addEventListener("click", () => {
       const target = btn.dataset.main;
@@ -953,15 +964,18 @@ document.addEventListener("DOMContentLoaded", () => {
       activeMain = target;
       activeFame = "big";
 
+      // стили кнопок
       tabsMain.forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
 
+      // показать/скрыть подкатегории
       fameTabsWrapper.style.display = target === "fame" ? "flex" : "none";
 
       fameTabs.forEach((f, i) => {
         f.classList.toggle("active", i === 0);
       });
 
+      // сброс поиска
       searchInput.value = "";
       searchInfo.textContent = "";
 
@@ -969,6 +983,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // обработка кликов по подкатегориям
   fameTabs.forEach((btn) => {
     btn.addEventListener("click", () => {
       const fame = btn.dataset.fame;
@@ -983,8 +998,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // поиск
   searchInput.addEventListener("input", updateLists);
 
+  // начальная отрисовка
   if (activeMain === "fame") {
     fameTabsWrapper.style.display = "flex";
   } else {
@@ -993,6 +1010,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateLists();
 });
+
 
     const style = document.createElement("style");
     style.textContent = `
