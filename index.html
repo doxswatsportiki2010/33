@@ -906,19 +906,18 @@
       updateLists();
     };
 
-    tabsMain.forEach((btn) => {
-      btn.onclick = () => {
-        if (btn.dataset.tab !== activeMain) {
-          tabsMain.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          activeMain = btn.dataset.tab;
-          fameTabsWrapper.style.display = "none";
-          searchInput.value = "";
-          searchInfo.textContent = "";
-          updateLists();
-        }
-      };
-    });
+function updateLists() {
+  allLists.forEach((list) => {
+    const parent = list.dataset.parent;
+    const fameType = list.dataset.fame;
+    const show =
+      (activeMain === "fame" && parent === "fame" && fameType === activeFame) ||
+      (parent === activeMain && activeMain !== "fame");
+
+    list.style.display = show ? "block" : "none";
+  });
+}
+
 
     tabsFame.forEach((btn) => {
       btn.onclick = () => {
