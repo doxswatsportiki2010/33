@@ -1153,49 +1153,9 @@
         return;
       }
 
-      const fameNames = {
-        big: "💎 Большой фейм",
-        mid: "📣 Нормальный фейм",
-        small: "🎯 Мелкий фейм",
-        admin: "🛠️ Админы",
-        valid: "✅ Валиднутые",
-        abandoned: "☠️ Заброшенные",
-        coder: "👨‍💻 Кодеры",
-        default: "🔹 Без категории"
-      };
 
-      const parentNames = {
-        fame: "Личности",
-        scam: "Скам",
-        beggars: "Бомжи"
-      };
 
-      for (const [parent, fameGroups] of Object.entries(grouped)) {
-        const sectionTitle = document.createElement("h2");
-        sectionTitle.textContent = `Секция: ${parentNames[parent] || parent}`;
-        sectionTitle.style.cssText = "margin:20px 0 10px;color:#b783ff;";
-        resultsContainer.appendChild(sectionTitle);
-
-        for (const [fameKey, items] of Object.entries(fameGroups)) {
-          const fameTitle = document.createElement("h3");
-          fameTitle.textContent = fameNames[fameKey] || fameKey;
-          fameTitle.style.cssText = "margin:10px 0 6px;color:#9f73ff;";
-          resultsContainer.appendChild(fameTitle);
-
-          const sectionWrapper = document.createElement("div");
-          sectionWrapper.className = "list";
-          sectionWrapper.style.display = "block";
-
-          items.forEach((item) => {
-            item.style.display = "flex";
-            sectionWrapper.appendChild(item);
-          });
-
-          resultsContainer.appendChild(sectionWrapper);
-        }
-      }
-    };
-
+     
     document.getElementById("closeSearchModal").onclick = () => {
       searchModal.style.display = "none";
       searchInputModal.value = "";
