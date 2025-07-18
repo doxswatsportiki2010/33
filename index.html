@@ -897,8 +897,8 @@
     const searchInput = document.getElementById("searchInput");
     const searchInfo = document.getElementById("searchInfo");
 
-    let activeMain = "fame",
-        activeFame = "big";
+    let activeMain = "fame";
+    let activeFame = "big";
 
     welcomeBtn.onclick = () => {
       welcomeModal.style.display = "none";
@@ -906,18 +906,40 @@
       updateLists();
     };
 
-function updateLists() {
-  allLists.forEach((list) => {
-    const parent = list.dataset.parent;
-    const fameType = list.dataset.fame;
-    const show =
-      (activeMain === "fame" && parent === "fame" && fameType === activeFame) ||
-      (parent === activeMain && activeMain !== "fame");
+    function updateLists() {
+      allLists.forEach((list) => {
+        const parent = list.dataset.parent;
+        const fameType = list.dataset.fame;
+        const show =
+          (activeMain === "fame" && parent === "fame" && fameType === activeFame) ||
+          (parent === activeMain && activeMain !== "fame");
 
-    list.style.display = show ? "block" : "none";
-  });
-}
+        list.style.display = show ? "block" : "none";
+      });
+    }
 
+    tabsMain.forEach((btn) => {
+      btn.onclick = () => {
+        const newMain = btn.dataset.main;
+        if (newMain && newMain !== activeMain) {
+          tabsMain.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          activeMain = newMain;
+          activeFame = "big";
+          searchInput.value = "";
+          searchInfo.textContent = "";
+
+          if (activeMain === "fame") {
+            fameTabsWrapper.style.display = "flex";
+          } else {
+            fameTabsWrapper.style.display = "none";
+          }
+
+          updateLists();
+        }
+      };
+    });
 
     tabsFame.forEach((btn) => {
       btn.onclick = () => {
@@ -932,19 +954,18 @@ function updateLists() {
       };
     });
 
-
-
     searchInput.oninput = () => {
       const q = searchInput.value.toLowerCase().trim();
       const contentArea = document.getElementById("contentArea");
 
       if (!q) {
-        fameTabsWrapper.style.display = "none";
+        if (activeMain === "fame") fameTabsWrapper.style.display = "flex";
         updateLists();
         searchInfo.textContent = "";
         return;
       }
 
+      fameTabsWrapper.style.display = "none";
       contentArea.innerHTML = "";
       const results = [];
 
@@ -993,7 +1014,7 @@ function updateLists() {
       document.body.appendChild(modal);
     });
 
-    fameTabsWrapper.style.display = "none";
+    if (activeMain === "fame") fameTabsWrapper.style.display = "flex";
     updateLists();
 
     const style = document.createElement("style");
@@ -1146,6 +1167,7 @@ function updateLists() {
     }
   });
 </script>
+
 
 
 </body>
