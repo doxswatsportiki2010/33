@@ -947,7 +947,7 @@
         updateLists();
         searchInfo.textContent = "";
         return;
-      
+      }
 
       contentArea.innerHTML = "";
       const sections = {};
@@ -963,12 +963,42 @@
       });
 
       if (Object.keys(sections).length === 0) {
-        contentArea.innerHTML = `<p style="color:#f88;">Ничего не найдено</p>`;
+        contentArea.innerHTML = <p style="color:#f88;">Ничего не найдено</p>;
         searchInfo.textContent = "";
         return;
       }
 
-     
+      const foundNames = [];
+      for (const [parent, items] of Object.entries(sections)) {
+        let title =
+          parent === "fame"
+            ? "Все личности"
+            : parent === "scam"
+            ? "Скам"
+            : parent === "beggars"
+            ? "Бомжи"
+            : parent;
+
+        const h2 = document.createElement("h2");
+        h2.textContent = Секция: ${title};
+        h2.style.cssText = "margin:20px 0 10px;color:#b783ff;";
+        contentArea.appendChild(h2);
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "list";
+        wrapper.style.display = "block";
+
+        items.forEach((it) => {
+          it.style.display = "flex";
+          wrapper.appendChild(it);
+        });
+        contentArea.appendChild(wrapper);
+
+        foundNames.push(title);
+      }
+
+      searchInfo.textContent = Найдено совпадений в секциях: ${foundNames.join(", ")};
+    };
 
     document.body.addEventListener("click", (e) => {
       const item = e.target.closest(".list-item");
@@ -980,12 +1010,12 @@
         "https://cdn-icons-png.flaticon.com/512/847/847969.png";
       const modal = document.createElement("div");
       modal.className = "modal-user";
-      modal.innerHTML = `
+      modal.innerHTML = 
       <div class="modal-content">
         <img src="${img}" />
         <h3>${name}</h3>
         <p>${desc}</p>
-      </div>`;
+      </div>;
       modal.onclick = () => modal.remove();
       document.body.appendChild(modal);
     });
@@ -994,7 +1024,7 @@
     updateLists();
 
     const style = document.createElement("style");
-    style.textContent = `
+    style.textContent = 
       #searchModal div::-webkit-scrollbar {
         width: 8px;
       }
@@ -1009,12 +1039,12 @@
         from { opacity: 0; transform: scale(0.95); }
         to { opacity: 1; transform: scale(1); }
       }
-    `;
+    ;
     document.head.appendChild(style);
 
     const searchModal = document.createElement("div");
     searchModal.id = "searchModal";
-    searchModal.style.cssText = `
+    searchModal.style.cssText = 
       display: none;
       position: fixed;
       top: 0; left: 0;
@@ -1027,9 +1057,9 @@
       padding-top: 60px;
       box-sizing: border-box;
       font-family: 'Segoe UI', sans-serif;
-    `;
+    ;
 
-    searchModal.innerHTML = `
+    searchModal.innerHTML = 
       <div style="
         background: #140024;
         border: 1px solid #8026ff;
@@ -1084,7 +1114,7 @@
         z-index: 10000;
         transition: transform 0.15s ease;
       " title="Закрыть">✖</button>
-    `;
+    ;
     document.body.appendChild(searchModal);
 
     const searchInputModal = document.getElementById("searchInputModal");
@@ -1100,9 +1130,22 @@
         return;
       }
 
+      const allItems = document.querySelectorAll(".list-item");
+      const grouped = {};
 
+      allItems.forEach((item) => {
+        const name = item.dataset.name?.toLowerCase() || "";
+        const desc = item.dataset.desc?.toLowerCase() || "";
+        const parent = item.closest(".list")?.dataset.parent;
+        const fame = item.closest(".list")?.dataset.fame;
 
-
+        if ((name.includes(q) || desc.includes(q)) && parent) {
+          if (!grouped[parent]) grouped[parent] = {};
+          const fameKey = fame || "default";
+          if (!grouped[parent][fameKey]) grouped[parent][fameKey] = [];
+          grouped[parent][fameKey].push(item.cloneNode(true));
+        }
+      });
 
       if (Object.keys(grouped).length === 0) {
         resultsContainer.innerHTML =
@@ -1110,9 +1153,49 @@
         return;
       }
 
+      const fameNames = {
+        big: "💎 Большой фейм",
+        mid: "📣 Нормальный фейм",
+        small: "🎯 Мелкий фейм",
+        admin: "🛠️ Админы",
+        valid: "✅ Валиднутые",
+        abandoned: "☠️ Заброшенные",
+        coder: "👨‍💻 Кодеры",
+        default: "🔹 Без категории"
+      };
 
+      const parentNames = {
+        fame: "Личности",
+        scam: "Скам",
+        beggars: "Бомжи"
+      };
 
-     
+      for (const [parent, fameGroups] of Object.entries(grouped)) {
+        const sectionTitle = document.createElement("h2");
+        sectionTitle.textContent = Секция: ${parentNames[parent] || parent};
+        sectionTitle.style.cssText = "margin:20px 0 10px;color:#b783ff;";
+        resultsContainer.appendChild(sectionTitle);
+
+        for (const [fameKey, items] of Object.entries(fameGroups)) {
+          const fameTitle = document.createElement("h3");
+          fameTitle.textContent = fameNames[fameKey] || fameKey;
+          fameTitle.style.cssText = "margin:10px 0 6px;color:#9f73ff;";
+          resultsContainer.appendChild(fameTitle);
+
+          const sectionWrapper = document.createElement("div");
+          sectionWrapper.className = "list";
+          sectionWrapper.style.display = "block";
+
+          items.forEach((item) => {
+            item.style.display = "flex";
+            sectionWrapper.appendChild(item);
+          });
+
+          resultsContainer.appendChild(sectionWrapper);
+        }
+      }
+    };
+
     document.getElementById("closeSearchModal").onclick = () => {
       searchModal.style.display = "none";
       searchInputModal.value = "";
@@ -1131,7 +1214,6 @@
     }
   });
 </script>
-
 
 </body>
 </html>
