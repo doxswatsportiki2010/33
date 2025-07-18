@@ -968,37 +968,7 @@
         return;
       }
 
-      const foundNames = [];
-      for (const [parent, items] of Object.entries(sections)) {
-        let title =
-          parent === "fame"
-            ? "Все личности"
-            : parent === "scam"
-            ? "Скам"
-            : parent === "beggars"
-            ? "Бомжи"
-            : parent;
-
-        const h2 = document.createElement("h2");
-        h2.textContent = `Секция: ${title}`;
-        h2.style.cssText = "margin:20px 0 10px;color:#b783ff;";
-        contentArea.appendChild(h2);
-
-        const wrapper = document.createElement("div");
-        wrapper.className = "list";
-        wrapper.style.display = "block";
-
-        items.forEach((it) => {
-          it.style.display = "flex";
-          wrapper.appendChild(it);
-        });
-        contentArea.appendChild(wrapper);
-
-        foundNames.push(title);
-      }
-
-      searchInfo.textContent = `Найдено совпадений в секциях: ${foundNames.join(", ")}`;
-    };
+     
 
     document.body.addEventListener("click", (e) => {
       const item = e.target.closest(".list-item");
@@ -1130,22 +1100,9 @@
         return;
       }
 
-      const allItems = document.querySelectorAll(".list-item");
-      const grouped = {};
 
-      allItems.forEach((item) => {
-        const name = item.dataset.name?.toLowerCase() || "";
-        const desc = item.dataset.desc?.toLowerCase() || "";
-        const parent = item.closest(".list")?.dataset.parent;
-        const fame = item.closest(".list")?.dataset.fame;
 
-        if ((name.includes(q) || desc.includes(q)) && parent) {
-          if (!grouped[parent]) grouped[parent] = {};
-          const fameKey = fame || "default";
-          if (!grouped[parent][fameKey]) grouped[parent][fameKey] = [];
-          grouped[parent][fameKey].push(item.cloneNode(true));
-        }
-      });
+
 
       if (Object.keys(grouped).length === 0) {
         resultsContainer.innerHTML =
