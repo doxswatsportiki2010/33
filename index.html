@@ -1170,32 +1170,6 @@
       });
     }
   });
-
-<script>
-  const buttons = document.querySelectorAll('.tabs-fame button');
-  const lists = document.querySelectorAll('.list');
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Убираем активный класс со всех кнопок
-      buttons.forEach(b => b.classList.remove('active'));
-      // Добавляем активный к нажатой
-      btn.classList.add('active');
-
-      // Получаем имя категории из data-fame
-      const fame = btn.getAttribute('data-fame');
-
-      // Скрываем все списки
-      lists.forEach(list => list.style.display = 'none');
-
-      // Показываем выбранный список по id
-      const activeList = document.getElementById(`fame-${fame}`);
-      if (activeList) activeList.style.display = 'block';
-    });
-  });
-</script>
-
-  
 </script>
 
 
