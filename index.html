@@ -1062,26 +1062,28 @@ modal.innerHTML = `
       updateLists();
   
       const style = document.createElement("style");
-      style.textContent = 
-        #searchModal div::-webkit-scrollbar {
-          width: 8px;
-        }
-        #searchModal div::-webkit-scrollbar-thumb {
-          background-color: #8e2de2;
-          border-radius: 10px;
-        }
-        #searchModal div::-webkit-scrollbar-track {
-          background: #1a0033;
-        }
-        @keyframes fadeScaleIn {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
-        };
+style.textContent = `
+  #searchModal div::-webkit-scrollbar {
+    width: 8px;
+  }
+  #searchModal div::-webkit-scrollbar-thumb {
+    background-color: #8e2de2;
+    border-radius: 10px;
+  }
+  #searchModal div::-webkit-scrollbar-track {
+    background: #1a0033;
+  }
+  @keyframes fadeScaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+`;
+
       document.head.appendChild(style);
   
       const searchModal = document.createElement("div");
       searchModal.id = "searchModal";
-      searchModal.style.cssText = 
+     searchModal.style.cssText = `
         display: none;
         position: fixed;
         top: 0; left: 0;
@@ -1093,8 +1095,7 @@ modal.innerHTML = `
         align-items: flex-start;
         padding-top: 60px;
         box-sizing: border-box;
-        font-family: 'Segoe UI', sans-serif;
-      ;
+        font-family: 'Segoe UI', sans-serif`;
   
       searchModal.innerHTML = 
         <div style="
@@ -1209,7 +1210,8 @@ modal.innerHTML = `
     results.forEach((item) => wrapper.appendChild(item));
     contentArea.appendChild(wrapper);
   
-    searchInfo.textContent = Найдено совпадений: ${results.length};
+    searchInfo.textContent = `Найдено совпадений: ${results.length}`;
+
   };
   
   
