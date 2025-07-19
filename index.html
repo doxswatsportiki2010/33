@@ -990,11 +990,7 @@ searchInput.oninput = () => {
     });
   });
 
-  if (results.length === 0) {
-    contentArea.innerHTML = `<p style="color:#f88;">Ничего не найдено</p>`;
-    searchInfo.textContent = "";
-    return;
-  }
+
 
   const wrapper = document.createElement("div");
   wrapper.className = "list";
