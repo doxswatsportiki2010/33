@@ -1021,9 +1021,12 @@ searchModal.style.cssText = `
   z-index: 9999;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; /* ✅ фиксированный центр */
+  box-sizing: border-box;
   font-family: 'Segoe UI', sans-serif;
+  flex-direction: column;
 `;
+
 
 searchModal.innerHTML = `
   <div style="
