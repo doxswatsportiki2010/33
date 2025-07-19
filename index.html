@@ -880,126 +880,57 @@
       >
     </div>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('[data-parent="fame"]').forEach((el) => {
-      if (!el.dataset.fame && el.id?.startsWith("fame-")) {
-        el.dataset.fame = el.id.replace("fame-", "");
-      }
-    });
-
-    const welcomeBtn = document.getElementById("welcomeBtn");
+ document.addEventListener("DOMContentLoaded", () => {
     const welcomeModal = document.getElementById("welcomeModal");
+    const welcomeBtn = document.getElementById("welcomeBtn");
     const mainContent = document.getElementById("mainContent");
-    const tabsMain = document.querySelectorAll(".tabs-main button");
-    const tabsFame = document.querySelectorAll(".tabs-fame button");
-    const allLists = document.querySelectorAll(".list");
-    const fameTabsWrapper = document.querySelector(".tabs-fame-wrapper");
     const searchInput = document.getElementById("searchInput");
     const searchInfo = document.getElementById("searchInfo");
-    
+    const contentArea = document.getElementById("contentArea");
+    const lists = Array.from(document.querySelectorAll(".list"));
 
-       welcomeBtn.onclick = () => {
+    welcomeBtn.onclick = () => {
       welcomeModal.style.display = "none";
       mainContent.style.display = "block";
       searchInput.focus();
       updateLists();
     };
 
-    let activeMain = "fame",
-        activeFame = "big";
-
- 
-
-    tabsMain.forEach((btn) => {
-      btn.onclick = () => {
-        if (btn.dataset.tab !== activeMain) {
-          tabsMain.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          activeMain = btn.dataset.tab;
-          fameTabsWrapper.style.display = "none";
-          searchInput.value = "";
-          searchInfo.textContent = "";
-          updateLists();
-        }
-      };
-    });
-
-    tabsFame.forEach((btn) => {
-      btn.onclick = () => {
-        if (btn.dataset.fame !== activeFame) {
-          tabsFame.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          activeFame = btn.dataset.fame;
-          searchInput.value = "";
-          searchInfo.textContent = "";
-          updateLists();
-        }
-      };
-    });
-
     function updateLists() {
-      allLists.forEach((list) => {
-    const fame = list.dataset.fame;
-    const parent = list.dataset.parent;
-
-    if (activeMain === "fame") {
-      // Показываем только списки, относящиеся к fame и активной сабкатегории
-      if (parent === "fame" && fame === activeFame) {
-        list.style.display = "block";
-      } else {
-        list.style.display = "none";
-      }
-      fameTabsWrapper.style.display = "flex";
-    } else {
-      // Показываем только списки, относящиеся к scam или beggars
-      if (parent === activeMain) {
-        list.style.display = "block";
-      } else {
-        list.style.display = "none";
-      }
-      fameTabsWrapper.style.display = "none";
-    }
+      lists.forEach(list => {
+        const items = Array.from(list.children);
+        const visibleItems = items.filter(item => item.style.display !== "none");
+        list.style.display = visibleItems.length > 0 ? "block" : "none";
       });
     }
 
+    searchInput.addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      let totalMatches = 0;
+      lists.forEach(list => {
+        const items = Array.from(list.children);
+        let listMatches = 0;
+        items.forEach(item => {
+          const match = item.textContent.toLowerCase().includes(query);
+          item.style.display = match ? "block" : "none";
+          if (match) listMatches++;
+        });
+        list.style.display = listMatches > 0 ? "block" : "none";
+        totalMatches += listMatches;
+      });
 
-searchInput.oninput = () => {
-  const q = searchInput.value.toLowerCase().trim();
-  const contentArea = document.getElementById("contentArea");
+      if (query.length === 0) {
+        searchInfo.textContent = "";
+        return;
+      }
 
-  if (!q) {
-    fameTabsWrapper.style.display = "none";
-    updateLists();
-    searchInfo.textContent = "";
-    return;
-  }
-
-  contentArea.innerHTML = "";
-  const results = [];
-  const seen = new Set(); // вот здесь, в начале функции!
-
-  allLists.forEach((list) => {
-    list.querySelectorAll(".list-item").forEach((item) => {
-      const name = item.dataset.name?.toLowerCase() || "";
-      if (item.textContent.toLowerCase().includes(q) && !seen.has(name)) {
-        seen.add(name);
-        const clone = item.cloneNode(true);
-        clone.style.display = "flex";
-        results.push(clone);
+      if (totalMatches === 0) {
+        contentArea.innerHTML = `<p style="color:#f88;">Ничего не найдено</p>`;
+      } else {
+        searchInfo.textContent = `Найдено совпадений: ${totalMatches}`;
       }
     });
   });
-
-
-
-  const wrapper = document.createElement("div");
-  wrapper.className = "list";
-  wrapper.style.display = "block";
-  results.forEach((item) => wrapper.appendChild(item));
-  contentArea.appendChild(wrapper);
-
-  searchInfo.textContent = `Найдено совпадений: ${results.length}`;
-};
 
 
   if (results.length === 0) {
