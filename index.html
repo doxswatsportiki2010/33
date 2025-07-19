@@ -1169,7 +1169,7 @@ searchInputModal.oninput = () => {
 
   const allItems = document.querySelectorAll(".list-item");
   const results = [];
-  const seen = new Set(); // И здесь, в начале функции!
+  const seen = new Set();  // И здесь тоже
 
   allItems.forEach((item) => {
     const name = item.dataset.name?.toLowerCase() || "";
@@ -1194,8 +1194,6 @@ searchInputModal.oninput = () => {
   results.forEach((item) => wrapper.appendChild(item));
   resultsContainer.appendChild(wrapper);
 };
-
-  });
 
   if (results.length === 0) {
     contentArea.innerHTML = `<p style="color:#f88;">Ничего не найдено</p>`;
