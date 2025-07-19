@@ -897,15 +897,18 @@
     const searchInput = document.getElementById("searchInput");
     const searchInfo = document.getElementById("searchInfo");
 
-    let activeMain = "fame",
-        activeFame = "big";
 
-    welcomeBtn.onclick = () => {
+       welcomeBtn.onclick = () => {
       welcomeModal.style.display = "none";
       mainContent.style.display = "block";
       searchInput.focus();
       updateLists();
     };
+
+    let activeMain = "fame",
+        activeFame = "big";
+
+ 
 
     tabsMain.forEach((btn) => {
       btn.onclick = () => {
