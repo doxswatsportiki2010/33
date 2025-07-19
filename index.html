@@ -1009,23 +1009,22 @@
 // Создание модального окна поиска
 const searchModal = document.createElement("div");
 searchModal.id = "searchModal";
-
-// ✅ Центрирование по вертикали и горизонтали
 searchModal.style.cssText = `
   display: none;
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(12px);
   z-index: 9999;
+  display: flex;
   justify-content: center;
-  align-items: center; /* <-- фикс */
-  box-sizing: border-box;
+  align-items: center;
   font-family: 'Segoe UI', sans-serif;
 `;
 
-// ✅ Весь контент обёрнут в центральный блок (модалку)
 searchModal.innerHTML = `
   <div style="
     background: #140024;
@@ -1041,7 +1040,6 @@ searchModal.innerHTML = `
     display: flex;
     flex-direction: column;
     gap: 16px;
-    min-height: 400px;
     animation: fadeScaleIn 0.2s ease;
   ">
     <button id="closeSearchModal" style="
