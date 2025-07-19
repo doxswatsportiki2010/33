@@ -896,14 +896,19 @@
     const fameTabsWrapper = document.querySelector(".tabs-fame-wrapper");
     const searchInput = document.getElementById("searchInput");
     const searchInfo = document.getElementById("searchInfo");
-
-
-       welcomeBtn.onclick = () => {
-      welcomeModal.style.display = "none";
-      mainContent.style.display = "block";
-      searchInput.focus();
-      updateLists();
-    };
+    const interval = setInterval(() => {
+      
+      if (welcomeBtn) {
+        welcomeBtn.addEventListener("click", () => {
+          const welcomeModal = document.getElementById("welcomeModal");
+          if (welcomeModal) {
+            welcomeModal.style.display = "none";
+          }
+        });
+        clearInterval(interval);
+      }
+    }, 100); // проверяем каждые 100мс
+  });
 
     let activeMain = "fame",
         activeFame = "big";
