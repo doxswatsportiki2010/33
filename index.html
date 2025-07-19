@@ -896,19 +896,14 @@
     const fameTabsWrapper = document.querySelector(".tabs-fame-wrapper");
     const searchInput = document.getElementById("searchInput");
     const searchInfo = document.getElementById("searchInfo");
-    const interval = setInterval(() => {
-      
-      if (welcomeBtn) {
-        welcomeBtn.addEventListener("click", () => {
-          const welcomeModal = document.getElementById("welcomeModal");
-          if (welcomeModal) {
-            welcomeModal.style.display = "none";
-          }
-        });
-        clearInterval(interval);
-      }
-    }, 100); // проверяем каждые 100мс
-  });
+
+
+       welcomeBtn.onclick = () => {
+      welcomeModal.style.display = "none";
+      mainContent.style.display = "block";
+      searchInput.focus();
+      updateLists();
+    };
 
     let activeMain = "fame",
         activeFame = "big";
@@ -996,7 +991,7 @@ searchInput.oninput = () => {
   });
 
   if (results.length === 0) {
-    contentArea.innerHTML = `<p style="color:#f88;">Ничего не найдено</p>`;
+    contentArea.innerHTML = <p style="color:#f88;">Ничего не найдено</p>;
     searchInfo.textContent = "";
     return;
   }
@@ -1007,7 +1002,7 @@ searchInput.oninput = () => {
   results.forEach((item) => wrapper.appendChild(item));
   contentArea.appendChild(wrapper);
 
-  searchInfo.textContent = `Найдено совпадений: ${results.length}`;
+  searchInfo.textContent = Найдено совпадений: ${results.length};
 };
 
 
@@ -1027,7 +1022,7 @@ searchInput.oninput = () => {
       });
 
       if (results.length === 0) {
-        contentArea.innerHTML = `<p style="color:#f88;">Ничего не найдено</p>`;
+        contentArea.innerHTML = <p style="color:#f88;">Ничего не найдено</p>;
         searchInfo.textContent = "";
         return;
       }
@@ -1038,7 +1033,7 @@ searchInput.oninput = () => {
       results.forEach((item) => wrapper.appendChild(item));
       contentArea.appendChild(wrapper);
 
-      searchInfo.textContent = `Найдено совпадений: ${results.length}`;
+      searchInfo.textContent = Найдено совпадений: ${results.length};
     };
 
     document.body.addEventListener("click", (e) => {
@@ -1051,12 +1046,12 @@ searchInput.oninput = () => {
         "https://cdn-icons-png.flaticon.com/512/847/847969.png";
       const modal = document.createElement("div");
       modal.className = "modal-user";
-      modal.innerHTML = `
+      modal.innerHTML = 
         <div class="modal-content">
           <img src="${img}" />
           <h3>${name}</h3>
           <p>${desc}</p>
-        </div>`;
+        </div>;
       modal.onclick = () => modal.remove();
       document.body.appendChild(modal);
     });
@@ -1065,7 +1060,7 @@ searchInput.oninput = () => {
     updateLists();
 
     const style = document.createElement("style");
-    style.textContent = `
+    style.textContent = 
       #searchModal div::-webkit-scrollbar {
         width: 8px;
       }
@@ -1079,12 +1074,12 @@ searchInput.oninput = () => {
       @keyframes fadeScaleIn {
         from { opacity: 0; transform: scale(0.95); }
         to { opacity: 1; transform: scale(1); }
-      }`;
+      };
     document.head.appendChild(style);
 
     const searchModal = document.createElement("div");
     searchModal.id = "searchModal";
-    searchModal.style.cssText = `
+    searchModal.style.cssText = 
       display: none;
       position: fixed;
       top: 0; left: 0;
@@ -1097,9 +1092,9 @@ searchInput.oninput = () => {
       padding-top: 60px;
       box-sizing: border-box;
       font-family: 'Segoe UI', sans-serif;
-    `;
+    ;
 
-    searchModal.innerHTML = `
+    searchModal.innerHTML = 
       <div style="
         background: #140024;
         border: 1px solid #8026ff;
@@ -1154,7 +1149,7 @@ searchInput.oninput = () => {
         z-index: 10000;
         transition: transform 0.15s ease;
       " title="Закрыть">✖</button>
-    `;
+    ;
     document.body.appendChild(searchModal);
 
     const searchInputModal = document.getElementById("searchInputModal");
@@ -1201,7 +1196,7 @@ searchInputModal.oninput = () => {
 };
 
   if (results.length === 0) {
-    contentArea.innerHTML = `<p style="color:#f88;">Ничего не найдено</p>`;
+    contentArea.innerHTML = <p style="color:#f88;">Ничего не найдено</p>;
     searchInfo.textContent = "";
     return;
   }
@@ -1212,7 +1207,7 @@ searchInputModal.oninput = () => {
   results.forEach((item) => wrapper.appendChild(item));
   contentArea.appendChild(wrapper);
 
-  searchInfo.textContent = `Найдено совпадений: ${results.length}`;
+  searchInfo.textContent = Найдено совпадений: ${results.length};
 };
 
 
@@ -1229,7 +1224,59 @@ searchInputModal.oninput = () => {
         }
       });
 
-     
+      if (results.length === 0) {
+        resultsContainer.innerHTML =
+          "<p style='color:#555;'>🚫 Ничего не найдено...</p>";
+        return;
+      }
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "list";
+      wrapper.style.display = "block";
+      results.forEach((item) => wrapper.appendChild(item));
+      resultsContainer.appendChild(wrapper);
+    };
+
+    document.getElementById("closeSearchModal").onclick = () => {
+      searchModal.style.display = "none";
+      searchInputModal.value = "";
+      resultsContainer.innerHTML =
+        "<p style='color:#666;'>Введите текст для поиска...</p>";
+    };
+
+    if (searchInput) {
+      searchInput.addEventListener("click", () => {
+        searchModal.style.display = "flex";
+        searchInputModal.value = "";
+        resultsContainer.innerHTML =
+          "<p style='color:#666;'>Введите текст для поиска...</p>";
+        searchInputModal.focus();
+      });
+    }
+  });
+
+
+  const buttons = document.querySelectorAll('.tabs-fame button');
+  const lists = document.querySelectorAll('.list');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Убираем активный класс со всех кнопок
+      buttons.forEach(b => b.classList.remove('active'));
+      // Добавляем активный к нажатой
+      btn.classList.add('active');
+
+      // Получаем имя категории из data-fame
+      const fame = btn.getAttribute('data-fame');
+
+      // Скрываем все списки
+      lists.forEach(list => list.style.display = 'none');
+
+      // Показываем выбранный список по id
+      const activeList = document.getElementById(fame-${fame});
+      if (activeList) activeList.style.display = 'block';
+    });
+  });
 </script>
 
 
