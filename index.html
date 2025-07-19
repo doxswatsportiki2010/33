@@ -342,8 +342,7 @@
         backdrop-filter: blur(8px);
         z-index: 9999;
         justify-content: center;
-        align-items: flex-start;
-        padding-top: 60px;
+        align-items: center;
         box-sizing: border-box;
         font-family: 'Segoe UI', sans-serif;
       }
@@ -354,7 +353,7 @@
         padding: 24px;
         width: 90%;
         max-width: 850px;
-        max-height: 75vh;
+        max-height: 80vh;
         overflow-y: auto;
         box-shadow: 0 0 25px rgba(142, 45, 226, 0.4);
         position: relative;
@@ -411,6 +410,31 @@
           transform: scale(1);
         }
       }
+      
+      /* Стили для скрытия ползунка */
+      #searchModalResults::-webkit-scrollbar {
+        width: 8px;
+        background: transparent;
+      }
+      
+      #searchModalResults::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      
+      #searchModalResults::-webkit-scrollbar-thumb {
+        background-color: rgba(128, 38, 255, 0.5);
+        border-radius: 10px;
+      }
+      
+      #searchModalResults::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(183, 131, 255, 0.7);
+      }
+      
+      /* Полностью скрываем ползунок для Firefox */
+      #searchModalResults {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(128, 38, 255, 0.5) transparent;
+      }
     </style>
   </head>
   <body>
@@ -456,6 +480,7 @@
           
                              <div
             class="list-item"
+            data-id="user-1"
             data-name="Николай @nucenu"
             data-desc=""
             data-img="https://files.catbox.moe/xpx4l0.jpg"
@@ -479,6 +504,7 @@
         
               <div
             class="list-item"
+            data-id="user-2"
             data-name="Aleksander Krasnodarov"
             data-desc="@Krasnodarov — Создатель"
             data-img="https://files.catbox.moe/2p1qv1.jpg"
@@ -497,6 +523,7 @@
           
                    <div
             class="list-item"
+            data-id="user-3"
             data-name="𝒔𝒆𝒓𝒚𝒙𝒙 𝒆𝒃𝒆𝒕 | 𝑴𝒊𝒉𝒂𝒊𝒍 𝑲𝒓𝒂𝒔𝒏𝒐𝒅𝒂𝒓𝒐𝒗"
             data-desc="@seryxx1337 — На данный момент дружим более 5 лет на расстоянии, ещё встретимся ❤️"
             data-img="https://files.catbox.moe/4k8i85.jpg"
@@ -512,6 +539,7 @@
           
                        <div
             class="list-item"
+            data-id="user-4"
             data-name="Витек @ownerneylowimych"
             data-desc="@ownerneylowimych"
             data-img="https://files.catbox.moe/ijd533.jpg"
@@ -526,6 +554,7 @@
           
                                  <div
             class="list-item"
+            data-id="user-5"
             data-name="секретов @cekretovv"
             data-desc="@cekretovv"
             data-img="https://files.catbox.moe/41m0v6.png"
@@ -540,6 +569,7 @@
           
                                          <div
             class="list-item"
+            data-id="user-6"
             data-name="ᴏдиᴄᴄᴇй [ ? ] @poseidon_smertonos"
             data-desc="Кент Краснодарова @poseidon_smertonos"
             data-img="https://files.catbox.moe/a59yih.jpg"
@@ -567,6 +597,7 @@
         >
           <div
             class="list-item"
+            data-id="user-7"
             data-name="Мираж"
             data-desc="Создатель сайта, кодер бота @KrasDorBot"
             data-img="https://files.catbox.moe/h6dl88.jpg"
@@ -587,6 +618,7 @@
         >
           <div
             class="list-item"
+            data-id="user-8"
             data-name="Мираж"
             data-desc="Мираж являеться Глав. Админом Краснодарова"
             data-img="https://files.catbox.moe/h6dl88.jpg"
@@ -608,6 +640,7 @@
         
                                           <div
             class="list-item"
+            data-id="user-9"
             data-name="𝑺𝒂𝒏𝒕𝒚 #ᴛихий ᴋонᴛуᴩ @cryns"
             data-desc="   Данный бомжара возомнил из себя дохуя могущественного, сидит посасывая хуй своему батьку, пиздит что-то в кф • ебаная бомжара как минимум без премиум и базового оформления профиля, а так же сидит 24/7 дрочит в кф #троллингом, но не может найти даже банальную информацию по физу или валидке.
 ⚪️ Учтите ещё одно, данный сын педофила кидает биф, хотя не знает что это, и не смог ответить на вопрос)
@@ -628,6 +661,7 @@
 
  <div
             class="list-item"
+            data-id="user-10"
             data-name="@yourealirefack_osint"
             data-desc='Данная личность - @yourealirefack_osint, бомж и скамер, без умений, то что умеет только пугать, бесплатные пробив боты и фанстат. его можете не бояться, чувак нихуя не умеет, а ещё мелочный) О нем : Бомж Без умений Скамит даже на 15 звёзд ( бомж мелочный ) Пустослов Интернет герой НН - неизвестный даже самому телеграмму [ В общем бич, удачи всем ]'
             data-img="https://files.catbox.moe/u14hzp.jpg"
@@ -657,6 +691,7 @@
           
  <div
             class="list-item"
+            data-id="user-10"
             data-name="@yourealirefack_osint"
             data-desc='Данная личность - @yourealirefack_osint, бомж и скамер, без умений, то что умеет только пугать, бесплатные пробив боты и фанстат. его можете не бояться, чувак нихуя не умеет, а ещё мелочный) О нем : Бомж Без умений Скамит даже на 15 звёзд ( бомж мелочный ) Пустослов Интернет герой НН - неизвестный даже самому телеграмму [ В общем бич, удачи всем ]'
             data-img="https://files.catbox.moe/u14hzp.jpg"
@@ -671,6 +706,7 @@
           
           <div
             class="list-item"
+            data-id="user-11"
             data-name="Мофера @mopheraa"
             data-desc="Данная личность - ебаный скамер и бомж вот его юз @ctury "
             data-img="https://files.catbox.moe/gh9nhn.jpg"
@@ -691,6 +727,7 @@
          
           <div
             class="list-item"
+            data-id="user-11"
             data-name="Мофера"
             data-desc="Данная личность - ебаный скамер и бомж вот его юз @ctury "
             data-img="https://files.catbox.moe/gh9nhn.jpg"
@@ -703,6 +740,7 @@
           </div>
           <div
             class="list-item"
+            data-id="user-12"
             data-name="Vinera Maniac @vkvinera"
             data-desc="Данная личность - @vkvinera ебаный пиздабол и бомж, которые утверждает что Краснодаров без фейма, хотя сам ебаный ноунейм который сидит с накрутом"
             data-img="https://files.catbox.moe/ozme21.jpg"
@@ -715,6 +753,7 @@
           </div>
           <div
             class="list-item"
+            data-id="user-13"
             data-name="ананимус qewrtqq @vwowr"
             data-desc="Данная личность -  @vwowr агрессивный ебаный бомж без умений, фулл нн"
             data-img="https://files.catbox.moe/8x40sm.jpg"
@@ -727,6 +766,7 @@
           </div>
           <div
             class="list-item"
+            data-id="user-14"
             data-name="ʙʟᴀᴢᴇ ᴍᴀʀᴠɪᴘᴏᴠ @vkovn"
             data-desc="Данная личность -  @vkovn ебаный бомж представляет из себя фулл немощью"
             data-img="https://files.catbox.moe/qcoryn.jpg"
@@ -740,6 +780,7 @@
           
                  <div
             class="list-item"
+            data-id="user-15"
             data-name="Падш1й Фидора @Fuckfidora"
             data-desc="Ебаная немощь без фейма @Fuckfidora"
             data-img="https://files.catbox.moe/vg9dub.jpg"
@@ -754,6 +795,7 @@
           
                            <div
             class="list-item"
+            data-id="user-16"
             data-name="Yarovitov #неуловимый#FDC @useryarovitov"
             data-desc="Ебаная немощь без фейма @useryarovitov"
             data-img="https://files.catbox.moe/ulkg0w.jpg"
@@ -768,6 +810,7 @@
           
                                      <div
             class="list-item"
+            data-id="user-17"
             data-name="Johanna Klein @userdiamond"
             data-desc="Ебаная немощь без фейма @userdiamond"
             data-img="https://files.catbox.moe/2wcrpm.jpg"
@@ -782,6 +825,7 @@
           
                                                <div
             class="list-item"
+            data-id="user-18"
             data-name="АРМАТ @FuckArmat"
             data-desc="Ебаная немощь без фейма @FuckArmat"
             data-img="https://files.catbox.moe/psjnsq.jpg"
@@ -795,6 +839,7 @@
           
            <div
             class="list-item"
+            data-id="user-19"
             data-name="Александр Восставший @SkypeVostal"
             data-desc="Ебаный бомж без умений, делает на всех липы и скидывает какие-то халупы и где кидает бумажки со своим ником людям под заборы • Сынок шлюхи думает что он что-то может, а на самом деле арбузный ебака, можете его не боятся он ебаный биченок !"
             data-img="https://files.catbox.moe/xot80w.jpg"
@@ -808,6 +853,7 @@
           
                      <div
             class="list-item"
+            data-id="user-20"
             data-name="Molitva Redline @pekcoha"
             data-desc="Делает липы, ебаный сын бляди без умений"
             data-img="https://files.catbox.moe/uxtrhf.jpg"
@@ -821,6 +867,7 @@
           
                                <div
             class="list-item"
+            data-id="user-21"
             data-name="Pahomov @pahomovattack"
             data-desc="Агро бомж без умений, жалуется феймам но в основном его шлют нахуй и не помогают"
             data-img="https://files.catbox.moe/cvqowg.jpg"
@@ -835,6 +882,7 @@
           
                                        <div
             class="list-item"
+            data-id="user-22"
             data-name="𝑺𝒂𝒏𝒕𝒚 #ᴛихий ᴋонᴛуᴩ @cryns"
             data-desc="   Данный бомжара возомнил из себя дохуя могущественного, сидит посасывая хуй своему батьку, пиздит что-то в кф • ебаная бомжара как минимум без премиум и базового оформления профиля, а так же сидит 24/7 дрочит в кф #троллингом, но не может найти даже банальную информацию по физу или валидке.
 ⚪️ Учтите ещё одно, данный сын педофила кидает биф, хотя не знает что это, и не смог ответить на вопрос)
@@ -857,6 +905,7 @@
           
                                                  <div
             class="list-item"
+            data-id="user-23"
             data-name="portman | Trust 45$ @masthouse"
             data-desc="Ебаный не способный ни на что тролль, так же с удовольствием активно гатится в туза с Pahomov @pahomovattack " 
             data-img="https://files.catbox.moe/p8r33y.png"
@@ -989,13 +1038,14 @@
 
           const allItems = document.querySelectorAll(".list-item");
           const results = [];
-          const seen = new Set();
+          const seenIds = new Set(); // Используем ID для уникальности
 
           allItems.forEach((item) => {
+            const id = item.dataset.id;
             const name = item.dataset.name?.toLowerCase() || "";
             const desc = item.dataset.desc?.toLowerCase() || "";
-            if ((name.includes(q) || desc.includes(q)) && !seen.has(name)) {
-              seen.add(name);
+            if ((name.includes(q) || desc.includes(q)) && !seenIds.has(id)) {
+              seenIds.add(id);
               const clone = item.cloneNode(true);
               clone.style.display = "flex";
               results.push(clone);
@@ -1030,13 +1080,14 @@
 
           const allItems = document.querySelectorAll(".list-item");
           const results = [];
-          const seen = new Set();
+          const seenIds = new Set(); // Используем ID для уникальности
 
           allItems.forEach((item) => {
+            const id = item.dataset.id;
             const name = item.dataset.name?.toLowerCase() || "";
             const desc = item.dataset.desc?.toLowerCase() || "";
-            if ((name.includes(q) || desc.includes(q)) && !seen.has(name)) {
-              seen.add(name);
+            if ((name.includes(q) || desc.includes(q)) && !seenIds.has(id)) {
+              seenIds.add(id);
               const clone = item.cloneNode(true);
               clone.style.display = "flex";
               results.push(clone);
