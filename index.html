@@ -1006,80 +1006,81 @@
       searchInfo.textContent = `Найдено совпадений: ${results.length}`;
     };
 
-    // Модальное окно поиска
-    const searchModal = document.createElement("div");
-    searchModal.id = "searchModal";
-    searchModal.style.cssText = `
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(12px);
-      z-index: 9999;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 60px;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-      flex-direction: column;
-    `;
+// Создание модального окна поиска
+const searchModal = document.createElement("div");
+searchModal.id = "searchModal";
 
-    searchModal.innerHTML = `
-      <div style="
-        background: #140024;
-        border: 1px solid #8026ff;
-        border-radius: 18px;
-        padding: 24px;
-        width: 90%;
-        max-width: 850px;
-        max-height: 75vh;
-        overflow-y: auto;
-        box-shadow: 0 0 25px rgba(142, 45, 226, 0.4);
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        min-height: 400px;
-        animation: fadeScaleIn 0.2s ease;
-      ">
-        <input id="searchInputModal" type="text" placeholder="🔍 Поиск по имени или описанию..." style="
-          width: 100%;
-          padding: 14px 18px;
-          font-size: 16px;
-          border-radius: 12px;
-          border: 1px solid #4e0a99;
-          outline: none;
-          background: #1b0033;
-          color: #fff;
-          box-shadow: 0 0 12px rgba(142, 45, 226, 0.2);
-          transition: border 0.2s;
-        " />
-        <div id="searchResults" style="
-          flex: 1;
-          overflow-y: auto;
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-          color: #ccc;
-          font-size: 15px;
-        ">
-          <p style="color:#666;">Введите текст для поиска...</p>
-        </div>
-      </div>
-      <button id="closeSearchModal" style="
-        position: fixed;
-        top: 20px;
-        right: 28px;
-        background: none;
-        border: none;
-        font-size: 26px;
-        color: #c47aff;
-        cursor: pointer;
-        z-index: 10000;
-        transition: transform 0.15s ease;
-      " title="Закрыть">✖</button>
-    `;
+// ✅ Центрирование по вертикали и горизонтали
+searchModal.style.cssText = `
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center; /* <-- фикс */
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+`;
+
+// ✅ Весь контент обёрнут в центральный блок (модалку)
+searchModal.innerHTML = `
+  <div style="
+    background: #140024;
+    border: 1px solid #8026ff;
+    border-radius: 18px;
+    padding: 24px;
+    width: 90%;
+    max-width: 850px;
+    max-height: 75vh;
+    overflow-y: auto;
+    box-shadow: 0 0 25px rgba(142, 45, 226, 0.4);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 400px;
+    animation: fadeScaleIn 0.2s ease;
+  ">
+    <button id="closeSearchModal" style="
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      color: #c47aff;
+      cursor: pointer;
+    ">✖</button>
+
+    <input id="searchInputModal" type="text" placeholder="🔍 Поиск по имени или описанию..." style="
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: 1px solid #4e0a99;
+      outline: none;
+      background: #1b0033;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(142, 45, 226, 0.2);
+      transition: border 0.2s;
+    " />
+
+    <div id="searchResults" style="
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      color: #ccc;
+      font-size: 15px;
+    ">
+      <p style="color:#666;">Введите текст для поиска...</p>
+    </div>
+  </div>
+`;
 
     document.body.appendChild(searchModal);
 
