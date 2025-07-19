@@ -959,35 +959,63 @@
       });
     }
 
-    searchInput.oninput = () => {
-      const q = searchInput.value.toLowerCase().trim();
-      const contentArea = document.getElementById("contentArea");
 
-      if (!q) {
-        fameTabsWrapper.style.display = "none";
-        updateLists();
-        searchInfo.textContent = "";
-        return;
+searchInput.oninput = () => {
+  const q = searchInput.value.toLowerCase().trim();
+  const contentArea = document.getElementById("contentArea");
+
+  if (!q) {
+    fameTabsWrapper.style.display = "none";
+    updateLists();
+    searchInfo.textContent = "";
+    return;
+  }
+
+  contentArea.innerHTML = "";
+  const results = [];
+  const seen = new Set(); // вот здесь, в начале функции!
+
+  allLists.forEach((list) => {
+    list.querySelectorAll(".list-item").forEach((item) => {
+      const name = item.dataset.name?.toLowerCase() || "";
+      if (item.textContent.toLowerCase().includes(q) && !seen.has(name)) {
+        seen.add(name);
+        const clone = item.cloneNode(true);
+        clone.style.display = "flex";
+        results.push(clone);
       }
-
-      contentArea.innerHTML = "";
-      const results = [];
-
-const seen = new Set();
-
-allLists.forEach((list) => {
-  list.querySelectorAll(".list-item").forEach((item) => {
-    const name = item.dataset.name?.toLowerCase() || "";
-    if (item.textContent.toLowerCase().includes(q) && !seen.has(name)) {
-      seen.add(name);
-      const clone = item.cloneNode(true);
-      clone.style.display = "flex";
-      results.push(clone);
-    }
+    });
   });
-});
 
-        });
+  if (results.length === 0) {
+    contentArea.innerHTML = `<p style="color:#f88;">Ничего не найдено</p>`;
+    searchInfo.textContent = "";
+    return;
+  }
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "list";
+  wrapper.style.display = "block";
+  results.forEach((item) => wrapper.appendChild(item));
+  contentArea.appendChild(wrapper);
+
+  searchInfo.textContent = `Найдено совпадений: ${results.length}`;
+};
+
+
+  if (results.length === 0) {
+    resultsContainer.innerHTML =
+      "<p style='color:#555;'>🚫 Ничего не найдено...</p>";
+    return;
+  }
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "list";
+  wrapper.style.display = "block";
+  results.forEach((item) => wrapper.appendChild(item));
+  resultsContainer.appendChild(wrapper);
+};
+
       });
 
       if (results.length === 0) {
@@ -1124,32 +1152,74 @@ allLists.forEach((list) => {
     const searchInputModal = document.getElementById("searchInputModal");
     const resultsContainer = document.getElementById("searchResults");
 
-    searchInputModal.oninput = () => {
-      const q = searchInputModal.value.toLowerCase().trim();
-      resultsContainer.innerHTML = "";
 
-      if (!q) {
-        resultsContainer.innerHTML =
-          "<p style='color:#666;'>Введите текст для поиска...</p>";
-        return;
-      }
+
+searchInputModal.oninput = () => {
+  const q = searchInputModal.value.toLowerCase().trim();
+  resultsContainer.innerHTML = "";
+
+  if (!q) {
+    resultsContainer.innerHTML =
+      "<p style='color:#666;'>Введите текст для поиска...</p>";
+    return;
+  }
+
+  const allItems = document.querySelectorAll(".list-item");
+  const results = [];
+  const seen = new Set(); // И здесь, в начале функции!
+
+  allItems.forEach((item) => {
+    const name = item.dataset.name?.toLowerCase() || "";
+    const desc = item.dataset.desc?.toLowerCase() || "";
+    if ((name.includes(q) || desc.includes(q)) && !seen.has(name)) {
+      seen.add(name);
+      const clone = item.cloneNode(true);
+      clone.style.display = "flex";
+      results.push(clone);
+    }
+  });
+
+  if (results.length === 0) {
+    resultsContainer.innerHTML =
+      "<p style='color:#555;'>🚫 Ничего не найдено...</p>";
+    return;
+  }
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "list";
+  wrapper.style.display = "block";
+  results.forEach((item) => wrapper.appendChild(item));
+  resultsContainer.appendChild(wrapper);
+};
+
+  });
+
+  if (results.length === 0) {
+    contentArea.innerHTML = `<p style="color:#f88;">Ничего не найдено</p>`;
+    searchInfo.textContent = "";
+    return;
+  }
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "list";
+  wrapper.style.display = "block";
+  results.forEach((item) => wrapper.appendChild(item));
+  contentArea.appendChild(wrapper);
+
+  searchInfo.textContent = `Найдено совпадений: ${results.length}`;
+};
+
 
       const allItems = document.querySelectorAll(".list-item");
       const results = [];
 
-const seen = new Set();
-
-allItems.forEach((item) => {
-  const name = item.dataset.name?.toLowerCase() || "";
-  const desc = item.dataset.desc?.toLowerCase() || "";
-  if ((name.includes(q) || desc.includes(q)) && !seen.has(name)) {
-    seen.add(name);
-    const clone = item.cloneNode(true);
-    clone.style.display = "flex";
-    results.push(clone);
-  }
-});
-
+      allItems.forEach((item) => {
+        const name = item.dataset.name?.toLowerCase() || "";
+        const desc = item.dataset.desc?.toLowerCase() || "";
+        if (name.includes(q) || desc.includes(q)) {
+          const clone = item.cloneNode(true);
+          clone.style.display = "flex";
+          results.push(clone);
         }
       });
 
@@ -1184,6 +1254,7 @@ allItems.forEach((item) => {
     }
   });
 
+
   const buttons = document.querySelectorAll('.tabs-fame button');
   const lists = document.querySelectorAll('.list');
 
@@ -1206,6 +1277,7 @@ allItems.forEach((item) => {
     });
   });
 </script>
+
 
 
 
